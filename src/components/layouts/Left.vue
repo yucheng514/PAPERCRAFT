@@ -1,6 +1,6 @@
 <template>
-    <div class="left">
-        111
+    <div class="flex-grow-0 bg-purple w100px h-full">
+        左侧栏
     </div>
 </template>
 
@@ -9,9 +9,4 @@
 
 </script>
 <style>
-.id {
-    background-color: green;
-    width: 200px;
-    height: 100%;
-}
 </style>

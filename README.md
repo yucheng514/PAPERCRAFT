@@ -9,4 +9,6 @@
 ### 编辑器
 - vuex -> pinia
 - [Naive UI](https://www.naiveui.com/zh-CN/light) 字体跟图标之后再说。
+- [unocss](https://uno.antfu.me/) & [作者文章](https://antfu.me/posts/reimagine-atomic-css-zh)
+  - 做一套自己的 preset(以后有时间)
 - 
