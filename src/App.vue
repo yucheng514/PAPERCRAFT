@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import Top from "./components/layouts/Top.vue";
+import { Top, Left, Right, Main } from "./components/layouts";
 // import { defineComponent } from "vue";
-import Left from "./components/layouts/Left.vue";
 import { NButton } from "naive-ui";
-import Main from "./components/layouts/Main.vue";
-import Right from "./components/layouts/Right.vue";
 </script>
 
 <template>
@@ -16,7 +13,7 @@ import Right from "./components/layouts/Right.vue";
         <div class="ml2 mr2 flex justify-between flex-grow">
             <Left class=""></Left>
 
-            <Main  class=""></Main>
+            <Main class=""></Main>
             <Right class=""></Right>
         </div>
         <div class="m2 bg-green flex-grow-0 text-center">底部栏</div>
