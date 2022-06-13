@@ -9,6 +9,7 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('main', {
     state: () => {
         return {
+            viewerSize: 1,
             mainBg: {
                 backgroundColor: defaultColor,
                 backgroundImage: defaultImage,
