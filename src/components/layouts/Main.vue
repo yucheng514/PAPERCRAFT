@@ -14,21 +14,53 @@
             <!-- 画布 -->
             <div id="drawing" @mousedown="viewerClick">
                 <div v-if="selectBox.isUsing" :style="selectBoxStyle"></div>
-                <div class="renderer" :style="selectRendererStyle"></div>
+                <div class="renderer" :style="rendererStyle">
+                    <render
+                        :elements="allData"
+                        :config="{}"
+                    ></render>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import Render from "@/components/render/Render.vue";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
+// import { allData } from "@/assets/mock.js";
 const store = useStore();
-const { curEl, mainBg, count, viewerSize } = storeToRefs(store);
+const { curEl, mainBg, viewerSize } = storeToRefs(store);
 const { setViewerSize } = store;
 const viewer = ref({});
-
+const allData = [
+    {
+        content: "大标题",
+        fontSize: 68.58,
+        fontFamily: "Alibaba PuHuiTi B",
+        lineHeight: 2.38889,
+        letterSpacing: 3.81,
+        transform: 36,
+        type: "TEXT",
+        width: 402.89278884933833,
+        height: 164,
+        verticalAlign: "middle",
+        textAlign: "center",
+        fontWeight: "",
+        fontStyle: "italic",
+        color: "rgba(255,0,0,1)",
+        top: 432.6587301587302,
+        left: 294.5238095238095,
+        textDecoration: "line-through",
+        newData: true,
+        locked: false,
+        opacity: 0.78,
+        textOrder: "horizontal",
+        virtualKey: "20220614175750z7hyzapggn",
+    },
+];
 onMounted(() => {
     viewerResize();
     window.addEventListener("resize", viewerResize);
@@ -37,15 +69,17 @@ function viewerResize() {
     let [dragboxWidth, dragboxHeight] = [800, 800];
     let ele = viewer.value as HTMLDivElement;
     //上下至少 100，左右至少 40
-    let widthViewer = (ele.clientWidth - 40) / dragboxWidth;
-    let heightViewer = (ele.clientHeight - 100) / dragboxHeight;
-    setViewerSize(
-        Math.min(
-            Number(widthViewer.toFixed(2)),
-            Number(heightViewer.toFixed(2)),
-            1
-        )
-    );
+    if (ele) {
+        let widthViewer = (ele.clientWidth - 40) / dragboxWidth;
+        let heightViewer = (ele.clientHeight - 100) / dragboxHeight;
+        setViewerSize(
+            Math.min(
+                Number(widthViewer.toFixed(2)),
+                Number(heightViewer.toFixed(2)),
+                1
+            )
+        );
+    }
 }
 const selectBox = reactive({
     isUsing: false,
@@ -117,7 +151,7 @@ const selectBoxStyle = computed(() => {
     } as const;
 });
 
-const selectRendererStyle = computed(() => {
+const rendererStyle = computed(() => {
     return {
         width: 800 * viewerSize.value + "px",
         height: 800 * viewerSize.value + "px",
