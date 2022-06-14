@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { Top, Left, Right, Main } from "./components/layouts";
-import { useStore } from "@/store/store";
-import { storeToRefs } from "pinia";
+// import { useStore } from "@/store/store";
+// import { storeToRefs } from "pinia";
 // import { defineComponent } from "vue";
 import { NButton } from "naive-ui";
 
-const store = useStore();
-const { curEl, mainBg, count } = storeToRefs(store);
-const { inc } = store;
+// const store = useStore();
+// const { curEl, mainBg, count } = storeToRefs(store);
 </script>
 
 <template>

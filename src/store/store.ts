@@ -34,6 +34,6 @@ export const useStore = defineStore('main', {
         }
     },
     actions: {
-        inc(){this.count++}
+        setViewerSize(num: number) { this.viewerSize = num }
     }
 })

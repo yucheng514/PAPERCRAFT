@@ -1,28 +1,52 @@
 <template>
+    <!-- mousedown.stop mousemove.prevent 为啥要加这两个修饰符？ -->
     <div
+        @mousedown.stop="preCreateBox"
+        @mousemove.prevent="beginCreateBox"
         class="h-full w-full text-center flex-grow"
-        @mousedown="preCreateBox"
-        @mousemove="beginCreateBox"
     >
         <!-- 可选中区域 -->
-        <div id="viewer" class="relative w-full h-full" ref="viewer">
+        <div
+            id="viewer"
+            class="relative w-full h-full flex justify-center items-center"
+            ref="viewer"
+        >
             <!-- 画布 -->
             <div id="drawing" @mousedown="viewerClick">
                 <div v-if="selectBox.isUsing" :style="selectBoxStyle"></div>
+                <div class="renderer" :style="selectRendererStyle"></div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 const store = useStore();
 const { curEl, mainBg, count, viewerSize } = storeToRefs(store);
-
+const { setViewerSize } = store;
 const viewer = ref({});
 
+onMounted(() => {
+    viewerResize();
+    window.addEventListener("resize", viewerResize);
+});
+function viewerResize() {
+    let [dragboxWidth, dragboxHeight] = [800, 800];
+    let ele = viewer.value as HTMLDivElement;
+    //上下至少 100，左右至少 40
+    let widthViewer = (ele.clientWidth - 40) / dragboxWidth;
+    let heightViewer = (ele.clientHeight - 100) / dragboxHeight;
+    setViewerSize(
+        Math.min(
+            Number(widthViewer.toFixed(2)),
+            Number(heightViewer.toFixed(2)),
+            1
+        )
+    );
+}
 const selectBox = reactive({
     isUsing: false,
     left: 0,
@@ -36,12 +60,16 @@ const originBox = reactive({
     startX: 0,
     startY: 0,
 });
+function emptySelectBox() {
+    Object.assign(selectBox, {
+        isUsing: false,
+    });
+}
 function preCreateBox(e: MouseEvent) {
     // 记录鼠标按下的开始坐标
     let value = viewer.value as HTMLDivElement;
     let viewerLeft = value.offsetLeft;
     let viewerTop = value.offsetTop;
-    console.log(viewerLeft, viewerTop);
     Object.assign(selectBox, {
         isUsing: true,
         left: 0,
@@ -57,13 +85,10 @@ function preCreateBox(e: MouseEvent) {
     });
 
     // vue 里有好的绑定事件方法吗？
-    window.addEventListener("mouseup", () => {
-        Object.assign(selectBox, {
-            isUsing: false,
-        });
-    });
+    // 不在 @mouseup 里监听是因为一旦鼠标移动到 main 范围以外就会有 bug
+    // 但是什么时候 remove 比较好呢？
+    window.addEventListener("mouseup", emptySelectBox);
 }
-
 function beginCreateBox(e: MouseEvent) {
     if (selectBox.isUsing) {
         let xChange = (e.pageX - originBox.startX) / viewerSize.value;
@@ -91,9 +116,44 @@ const selectBoxStyle = computed(() => {
         left: selectBox.left * viewerSize.value + "px",
     } as const;
 });
+
+const selectRendererStyle = computed(() => {
+    return {
+        width: 800 * viewerSize.value + "px",
+        height: 800 * viewerSize.value + "px",
+        // ...mainBg,
+    } as const;
+});
 </script>
 <style>
 #viewer {
     background-color: #eff2f7;
+}
+.renderer {
+    display: flex;
+    position: relative;
+    background-size: 16px 16px;
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    background-position: 0 0, 8px 8px;
+    background-image: linear-gradient(
+            to top right,
+            #ccc 25%,
+            transparent 25%,
+            transparent 75%,
+            #ccc 75%,
+            #ccc
+        ),
+        linear-gradient(
+            to top right,
+            #ccc 25%,
+            transparent 25%,
+            transparent 75%,
+            #ccc 75%,
+            #ccc
+        );
+    width: 800px;
+    height: 800px;
+    opacity: 1;
 }
 </style>
