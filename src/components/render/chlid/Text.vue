@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { reactive, computed, ref } from "vue";
-import util from "@/assets/util";
+import { getFont, getZIndex } from "@/assets/util";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 const store = useStore();
@@ -57,10 +57,9 @@ const props = defineProps<Props>();
 //     middle: "center",
 // };
 
-
 const getStyle = computed(() => {
     let text = props.element;
-    let realFont = util.getFont(text.fontFamily);
+    let realFont = getFont(text.fontFamily);
     let style = {
         letterSpacing: `${text.letterSpacing}px`,
         lineHeight: text.lineHeight,
@@ -83,13 +82,13 @@ const getStyle = computed(() => {
         height: text.height + "px",
         opacity: text.opacity,
         color: text.color,
-        zIndex: util.getZIndex(props.index),
+        zIndex: getZIndex(props.index),
         display: "flex",
         // overflow: 'hidden',
         wordBreak: "break-all",
         whiteSpace: "pre-wrap",
         // fontWeight: text.fontWeight ? text.fontWeight : "normal", 报错
-        fontWeight: 'normal',
+        fontWeight: "normal",
         fontStyle: text.fontStyle ? text.fontStyle : "normal",
         writingMode: text.textOrder === "vertical" ? "vertical-rl" : "initial",
         // alignItems: text.verticalAlign

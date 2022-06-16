@@ -1,13 +1,12 @@
-import fonts from "./fonts"
+import fonts from "./fonts";
 
 const initialAlign = {
-    vertical: 'middle',          //这里top时输入文字不会位移，否则会(改为middle,否则有更大的问题-主要兼容输入)
-    horizontal: 'center',
-}
+    vertical: "middle", //这里top时输入文字不会位移，否则会(改为middle,否则有更大的问题-主要兼容输入)
+    horizontal: "center",
+};
 
-
-export default {
-    // copy,
+export  {
+    copy,
     // customMap,
     // initialAlign,
     // isText,
@@ -27,7 +26,7 @@ export default {
     // canCustomAdd,
     // dealCustomAdd,
     // getDocumentFontStatus
-}
+};
 
 function copy(object: object) {
     if (!object) return object;
@@ -60,7 +59,7 @@ function copy(object: object) {
 
 // //渲染的zIndex用基础值 50 加上元素的排序号
 function getZIndex(index: number): number {
-    return 50 + index
+    return 50 + index;
 }
 
 // function getRelative(imageEditBoxObject: any, imageEditImageObject: any) {
@@ -89,12 +88,11 @@ function getFont(fontName: string) {
     if (font) {
         font.name = fontName;
     } else {
-        font = fonts['Source Han Sans CN Regular'];
-        font.name = 'Source Han Sans CN Regular';
+        font = fonts["Source Han Sans CN Regular"];
+        font.name = "Source Han Sans CN Regular";
     }
     return font;
 }
-
 
 // function getClipSvgStyle(box, child) {
 //     //正常的svg盒子
