@@ -22,8 +22,11 @@ export const useStore = defineStore("main", {
         setViewerSize(num: number) {
             this.viewerSize = num;
         },
-        setCurrent(val: any) {
+        setCurrentElement(val: any) {
             this.currentElement = val;
+        },
+        clearCurrentElement(){
+            this.currentElement = null;
         },
         setMouseDownEvent(val: any) {
             this.mouseDownEvent = val;

@@ -5,7 +5,8 @@ const initialAlign = {
     horizontal: "center",
 };
 
-export  {
+export {
+    formatDateTime,
     copy,
     // customMap,
     // initialAlign,
@@ -27,7 +28,18 @@ export  {
     // dealCustomAdd,
     // getDocumentFontStatus
 };
-
+function formatDateTime() {
+    let date = new Date();
+    let y = date.getFullYear();
+    let m: number | string = date.getMonth() + 1;
+    m = m < 10 ? "0" + m : m;
+    let d: number | string = date.getDate();
+    d = d < 10 ? "0" + d : d;
+    let h = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+    return y + Number(m) + Number(d) + h + minute + second;
+}
 function copy(object: object) {
     if (!object) return object;
     return JSON.parse(JSON.stringify(object));
