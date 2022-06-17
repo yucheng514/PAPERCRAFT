@@ -1,7 +1,3 @@
-let defaultColor = "#fff";
-let defaultImage =
-    "linear-gradient(to top right, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(to top right, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc)";
-
 import { defineStore } from "pinia";
 import { allData } from "@/assets/mock";
 // import { mergeObject } from "@/assets/util";
@@ -10,15 +6,10 @@ export const useStore = defineStore("main", {
     state: () => {
         return {
             viewerSize: 1,
-            mainBg: {
-                backgroundColor: defaultColor,
-                backgroundImage: defaultImage,
-                opacity: 1,
-            },
             currentElementKey: null,
             count: 0,
             mouseDownEvent: null,
-            allData
+            allData,
         };
     },
     actions: {
@@ -32,7 +23,7 @@ export const useStore = defineStore("main", {
         //     let ele = this.allData.find(item => item.virtualKey === this.currentElementKey)
         //     // mergeObject(ele, val)
         // },
-        clearCurrentElement(){
+        clearCurrentElement() {
             this.currentElementKey = null;
         },
         setMouseDownEvent(val: any) {

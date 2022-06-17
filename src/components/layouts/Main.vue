@@ -18,7 +18,7 @@
             <!-- 画布 -->
             <div id="drawing" class="relative" ref="drawing">
                 <!-- 渲染全部元素、吸附线和框体 -->
-                <div class="renderer" :style="rendererStyle">
+                <div class="renderer" :style="getRendererStyle">
                     <!-- left 吸附线 -->
                     <div
                         class="h-full w0px border border-dashed border-#999 absolute left-0px top-0px z-999"
@@ -50,6 +50,7 @@
                 </div>
                 <!-- 当前选中的渲染元素 -->
                 <div
+                    class="absolute"
                     v-if="currentElementKey"
                     @mousedown.stop="curBoxDown($event)"
                     @mouseup="curBoxUp($event)"
@@ -65,8 +66,8 @@ import Render from "@/components/render/Render.vue";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-import { copy, mergeObject } from "@/assets/util";
-import { useMouse } from "@vueuse/core";
+// import { copy, mergeObject } from "@/assets/util";
+import { useEventListener } from "@vueuse/core";
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);
@@ -80,7 +81,6 @@ const {
 } = store;
 const viewer = ref({});
 const drawing = ref({});
-const { x, y } = useMouse();
 const assistance = reactive({
     left: 0,
     top: 0,
@@ -98,30 +98,28 @@ const currentElement = computed(() => {
     });
     return curEl;
 });
-onMounted(() => {
-    viewerResize();
-    window.addEventListener("resize", viewerResize);
-    window.addEventListener("mousemove", (e: any) => {
-        let value = viewer.value as HTMLDivElement;
-        // console.log(value.offsetLeft)
-        if (value) {
-            e.positionX = e.clientX - value.offsetLeft;
-            e.positionY = e.clientY - value.offsetTop;
-            if (
-                mouseDownEvent.value !== null &&
-                typeof mouseDownEvent.value === "object"
-            ) {
-                mouseDownEvent.value.cb(e);
-            }
+useEventListener(window, "mousemove", (e: any) => {
+    let value = viewer.value as HTMLDivElement;
+    // console.log(value.offsetLeft)
+    if (value) {
+        e.positionX = e.clientX - value.offsetLeft;
+        e.positionY = e.clientY - value.offsetTop;
+        if (
+            mouseDownEvent.value !== null &&
+            typeof mouseDownEvent.value === "object"
+        ) {
+            // @ts-ignore
+            mouseDownEvent.value.cb(e);
         }
-    });
-    window.addEventListener("mouseup", (e: MouseEvent) => {
-        // let originData = mouseDownEvent.value.originData;
-        // let newData = copy(currentElement.value);
-        // mergeObject(currentElement.value, newData);
-        clearMouseDownEvent();
-    });
+    }
 });
+useEventListener(window, "mouseup", (e: MouseEvent) => {
+    // let originData = mouseDownEvent.value.originData;
+    // let newData = copy(currentElement.value);
+    // mergeObject(currentElement.value, newData);
+    clearMouseDownEvent();
+});
+useEventListener(window, "resize", viewerResize);
 function dealEleEnter(key: string) {
     // 暂时用 index 来判断当前选中元素，后续可能会改用 virtualKey (已改用)
     currentHoverKey.value = key;
@@ -175,7 +173,9 @@ function curBoxDown(event: MouseEvent) {
                 originData.top;
 
             //赋值
+            // @ts-ignore
             currentElement.value.left = left;
+            // @ts-ignore
             currentElement.value.top = top;
         },
     };
@@ -197,12 +197,13 @@ function curBoxUp(event: MouseEvent) {
     }, 200);
 }
 const getDragBoxStyle = computed(() => {
+    // @ts-ignore
     let style = Object.assign({}, getBoxPosition(currentElement.value), {
         zIndex: 998,
         cursor: "move",
+        // @ts-ignore
         transform: `rotate(${currentElement.value.transform}deg)`,
         border: "1px dashed #000",
-        position: "absolute",
     });
     return style;
 });
@@ -213,6 +214,7 @@ const getHoverBoxStyle = computed(() => (element: any) => {
             {
                 opacity:
                     (!currentElement.value ||
+                        // @ts-ignore
                         currentElement.value.virtualKey !==
                             element.virtualKey) &&
                     currentHoverKey.value !== "" &&
@@ -319,12 +321,10 @@ const getSelectBoxStyle = computed(() => {
     } as const;
 });
 
-const rendererStyle = computed(() => {
-    return {};
+const getRendererStyle = computed(() => {
     return {
         width: 800 * viewerSize.value + "px",
         height: 800 * viewerSize.value + "px",
-        // ...mainBg,
     } as const;
 });
 </script>

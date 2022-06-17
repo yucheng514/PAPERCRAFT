@@ -9,6 +9,7 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
+    "@vueuse/core": "^8.7.3",
     "pinia": "^2.0.14",
     "vue": "^3.2.31"
   },
