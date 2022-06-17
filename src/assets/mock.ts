@@ -18,8 +18,6 @@ const allData = [
         top: 432.6587301587302,
         left: 294.5238095238095,
         textDecoration: "line-through",
-        newData: true,
-        locked: false,
         opacity: 0.78,
         textOrder: "horizontal",
         virtualKey: "20220614175750z7hyzapggn",
@@ -42,12 +40,10 @@ const allData = [
         top: 132.6587301587302,
         left: 194.5238095238095,
         textDecoration: "line-through",
-        newData: true,
-        locked: false,
         opacity: 0.78,
         textOrder: "horizontal",
         virtualKey: "20220614175751z7hyzapggn",
     },
 ];
 
-export { allData, curData };
+export { allData };

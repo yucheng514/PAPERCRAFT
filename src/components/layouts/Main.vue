@@ -41,14 +41,16 @@
                         v-for="(element, index) in allData"
                         class="absolute border border-#000 border-dashed z-998"
                         :style="getHoverBoxStyle(element)"
-                        @mousedown.stop="dealHoverBoxDown($event, element)"
+                        @mousedown.stop="
+                            dealHoverBoxDown($event, element.virtualKey)
+                        "
                         @mouseenter="dealEleEnter(element.virtualKey)"
                         @mouseleave="dealEleLeave"
                     ></div>
                 </div>
                 <!-- 当前选中的渲染元素 -->
                 <div
-                    v-if="currentElement"
+                    v-if="currentElementKey"
                     @mousedown.stop="curBoxDown($event)"
                     @mouseup="curBoxUp($event)"
                     :style="getDragBoxStyle"
@@ -63,17 +65,18 @@ import Render from "@/components/render/Render.vue";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-import { allData } from "@/assets/mock";
-import { copy } from "@/assets/util";
+import { copy, mergeObject } from "@/assets/util";
 import { useMouse } from "@vueuse/core";
 const store = useStore();
-const { viewerSize, currentElement, mouseDownEvent } = storeToRefs(store);
+const { viewerSize, currentElementKey, mouseDownEvent, allData } =
+    storeToRefs(store);
 const {
     setViewerSize,
-    setCurrentElement,
+    setCurrentElementKey,
     setMouseDownEvent,
     clearMouseDownEvent,
     clearCurrentElement,
+    // setElement,
 } = store;
 const viewer = ref({});
 const drawing = ref({});
@@ -85,7 +88,16 @@ const assistance = reactive({
     showTop: false,
 });
 let currentHoverKey = ref("");
-
+const currentElement = computed(() => {
+    let curEl = {};
+    allData.value.some((el) => {
+        if (el.virtualKey === currentElementKey.value) {
+            curEl = el;
+            return true;
+        } else return false;
+    });
+    return curEl;
+});
 onMounted(() => {
     viewerResize();
     window.addEventListener("resize", viewerResize);
@@ -99,15 +111,14 @@ onMounted(() => {
                 mouseDownEvent.value !== null &&
                 typeof mouseDownEvent.value === "object"
             ) {
-                console.log('2')
                 mouseDownEvent.value.cb(e);
             }
         }
     });
     window.addEventListener("mouseup", (e: MouseEvent) => {
-        let originData = mouseDownEvent.value.originData;
-        let newData = copy(currentElement.value);
-        mergeObject(currentElement.value, newData);
+        // let originData = mouseDownEvent.value.originData;
+        // let newData = copy(currentElement.value);
+        // mergeObject(currentElement.value, newData);
         clearMouseDownEvent();
     });
 });
@@ -120,10 +131,10 @@ function dealEleLeave() {
 }
 function dealHoverBoxDown(event: MouseEvent, element: any) {
     // dealMouseDown(element, event);
-    setCurrentElement(element);
+    setCurrentElementKey(element);
 }
 function dealMouseDown(element: any, event: any) {
-    setCurrentElement(element);
+    setCurrentElementKey(element);
 }
 function viewerResize() {
     let [dragboxWidth, dragboxHeight] = [800, 800];
@@ -166,25 +177,9 @@ function curBoxDown(event: MouseEvent) {
             //赋值
             currentElement.value.left = left;
             currentElement.value.top = top;
-            setCurrentElement(currentElement)
         },
     };
-    console.log('1')
     setMouseDownEvent(pack);
-}
-function mergeObject(newObj: any, obj: any) {
-    //注意，此方法不支持含有函数的对象复制
-    let keys = Object.keys(obj);
-    for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        if (typeof obj[key] === "object" && obj[key] !== null) {
-            let defaultObj = obj[key] instanceof Array ? [] : {};
-            newObj[key] = newObj[key] || defaultObj;
-            mergeObject(newObj[key], obj[key]);
-        } else {
-            newObj[key] = obj[key];
-        }
-    }
 }
 
 function curBoxUp(event: MouseEvent) {
@@ -217,8 +212,9 @@ const getHoverBoxStyle = computed(() => (element: any) => {
             {},
             {
                 opacity:
-                    (!currentElement ||
-                        currentElement.virtualKey !== element.virtualKey) &&
+                    (!currentElement.value ||
+                        currentElement.value.virtualKey !==
+                            element.virtualKey) &&
                     currentHoverKey.value !== "" &&
                     currentHoverKey.value === element.virtualKey
                         ? 1
@@ -226,7 +222,7 @@ const getHoverBoxStyle = computed(() => (element: any) => {
 
                 cursor: "pointer",
                 overflow: "visible",
-                zIndex: 50 + allData.indexOf(element),
+                zIndex: 50 + allData.value.indexOf(element),
             },
             getBoxPosition(element)
         );

@@ -6,6 +6,7 @@ const initialAlign = {
 };
 
 export {
+    mergeObject,
     formatDateTime,
     copy,
     // customMap,
@@ -28,6 +29,20 @@ export {
     // dealCustomAdd,
     // getDocumentFontStatus
 };
+function mergeObject(newObj: any, obj: any) {
+    //注意，此方法不支持含有函数的对象复制
+    let keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+            let defaultObj = obj[key] instanceof Array ? [] : {};
+            newObj[key] = newObj[key] || defaultObj;
+            mergeObject(newObj[key], obj[key]);
+        } else {
+            newObj[key] = obj[key];
+        }
+    }
+}
 function formatDateTime() {
     let date = new Date();
     let y = date.getFullYear();
