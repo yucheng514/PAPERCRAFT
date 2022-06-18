@@ -55,7 +55,17 @@
                     @mousedown.stop="curBoxDown($event)"
                     @mouseup="curBoxUp($event)"
                     :style="getDragBoxStyle"
-                ></div>
+                >
+                    <!-- 八个点，用来对元素进行各个方位的缩放 -->
+                    <!-- <div class="relative"> -->
+                    <!-- 不用容器包裹好像也可以 -->
+                    <em
+                        v-for="dot in dots"
+                        :id="dot"
+                        :style="getDotStyle(dot)"
+                    ></em>
+                    <!-- </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -63,11 +73,13 @@
 
 <script setup lang="ts">
 import Render from "@/components/render/Render.vue";
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 // import { copy, mergeObject } from "@/assets/util";
 import { useEventListener } from "@vueuse/core";
+import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
+
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);
@@ -98,6 +110,40 @@ const currentElement = computed(() => {
     });
     return curEl;
 });
+
+const getDotStyle = computed(() => (dot: string) => {
+    let style = {
+        position: "absolute",
+        display: "inline-block",
+        background: "#fff",
+        width: "8px",
+        height: "8px",
+        border: "1px solid #666",
+        zIndex: 1,
+        // @ts-ignore
+        ...dotStyle[dot],
+        // @ts-ignore
+        cursor: cursorObject[dot],
+    };
+    return style;
+});
+watch(
+    // @ts-ignore
+    () => currentElement.value.transform,
+    () => {
+        setTimeout(() => {
+            dots.forEach((dot) => {
+                // @ts-ignore
+                cursorObject[dot] = assertCursor(
+                    currentElement.value,
+                    viewerSize.value,
+                    dot
+                );
+                console.log(cursorObject);
+            });
+        }, 0);
+    }
+);
 useEventListener(window, "mousemove", (e: any) => {
     let value = viewer.value as HTMLDivElement;
     // console.log(value.offsetLeft)
