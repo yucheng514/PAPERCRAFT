@@ -63,6 +63,7 @@
                         v-for="dot in dots"
                         :id="dot"
                         :style="getDotStyle(dot)"
+                        @mousedown.stop="dotMouseDown($event)"
                     ></em>
                     <!-- </div> -->
                 </div>
@@ -73,10 +74,10 @@
 
 <script setup lang="ts">
 import Render from "@/components/render/Render.vue";
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-// import { copy, mergeObject } from "@/assets/util";
+import { copy, mergeObject, isText } from "@/assets/util";
 import { useEventListener } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
 
@@ -139,11 +140,264 @@ watch(
                     viewerSize.value,
                     dot
                 );
-                console.log(cursorObject);
+                // console.log(cursorObject);
             });
         }, 0);
     }
 );
+function dotMouseDown(event: MouseEvent) {
+    let eventStartPosition = {
+        x: event.clientX,
+        y: event.clientY,
+    };
+    let originData = copy(currentElement.value);
+    originData.initialWidth = originData.width / (originData.scaleX || 1);
+    originData.initialHeight = originData.height / (originData.scaleY || 1);
+    let dotDom = event.target;
+    let pack: { [k: string]: any } = {
+        target: currentElement.value,
+        event: event,
+        originData,
+    };
+    // @ts-ignore
+    let dotIdName = dotDom.id;
+    if (dotIdName && dots.includes(dotIdName)) {
+        pack.callback = function (moveEvent: any) {
+            let flag = 1;
+            let testRotate =
+                (parseInt(currentElement.value.transform) * Math.PI) / 180;
+            let k = Math.tan(Math.PI / 2 - testRotate);
+            if (["mt", "mb"].includes(dotIdName)) {
+                k = Math.tan(-testRotate);
+            }
+            //coordinateX、Y为x/y坐标实际增加的量（/that.viewerSize就可以加到数据上）
+            let coordinateX = moveEvent.clientX - eventStartPosition.x;
+            let coordinateY = eventStartPosition.y - moveEvent.clientY;
+            //原来length1还除以了 / Math.sin(that.kDia),导致高度增加而宽度不变时 此值无限接近0，拖动mb/bt时高度飞速变化
+            let length1 =
+                Math.abs(k * coordinateX - coordinateY) /
+                Math.sqrt(Math.pow(k, 2) + 1) /
+                viewerSize.value;
+            let testY = k * (moveEvent.clientX - eventStartPosition.x);
+            if (["mb", "mt"].includes(dotIdName)) {
+                flag =
+                    eventStartPosition.y - moveEvent.clientY < testY
+                        ? flag
+                        : -flag;
+                flag = Math.cos(testRotate) < 0 ? -flag : flag;
+                flag = ["mt"].includes(dotIdName) ? -flag : flag;
+            } else {
+                flag =
+                    eventStartPosition.y - moveEvent.clientY < testY
+                        ? flag
+                        : -flag;
+                flag = testRotate > Math.PI ? -flag : flag;
+                flag = ["lt", "lb", "lm"].includes(dotIdName) ? -flag : flag;
+            }
+            //新增一行kDia的处理，如果kDia不存在，就用 bound记录的原始kDia
+            let kDia = Math.atan(originData.width / originData.height);
+            //在这里加一个判断，如果是斜轴拖放，kDia永远是 bound中记录的值
+            if (["rt", "rb", "lt", "lb"].includes(dotIdName)) {
+                kDia = Math.atan(originData.width / originData.height);
+            }
+            let offsetX = Math.sin(kDia) * length1 * flag;
+            let offsetY = Math.cos(kDia) * length1 * flag;
+
+            //以下几行代码自定义了 宽度拖放和高度拖放的行为，所以他们可以随意改变kDia
+            if (["rm", "lm"].includes(dotIdName)) {
+                offsetY = 0;
+                offsetX = length1 * flag;
+                if (offsetX + originData.width <= 1)
+                    offsetX = -originData.width + 1;
+            } else if (["mt", "mb"].includes(dotIdName)) {
+                offsetX = 0;
+                offsetY = length1 * flag;
+                if (offsetY + originData.height <= 1)
+                    offsetY = -originData.height + 1;
+            } else {
+                //这里是斜轴拖放，某轴小于1，就把该轴置为1，另一轴等比
+                if (offsetX + originData.width <= 1) {
+                    offsetX = -originData.width + 1;
+                    offsetY = offsetX / Math.tan(kDia);
+                } else if (offsetY + originData.height <= 1) {
+                    offsetY = -originData.height + 1;
+                    offsetX = offsetY * Math.tan(kDia);
+                }
+            }
+            //宽高变化，直接加上宽高（文字、价签需调整字体）
+            currentElement.value.width = originData.width + offsetX;
+            currentElement.value.height = originData.height + offsetY;
+            let operateType = currentElement.value.type.toLowerCase();
+            let operateSubType =
+                currentElement.value.subType &&
+                currentElement.value.subType.toLowerCase();
+            //scalable拖动不再改字体、间距，直接改 scale
+            if (isText(operateType) && operateSubType === "scalable") {
+                //                                let isX=$this.hasClass('rm') || $this.hasClass('lm')
+                //                                if(isX){
+                currentElement.value.scaleX =
+                    1 +
+                    (currentElement.value.width - originData.initialWidth) /
+                        originData.initialWidth;
+                //                                }else{
+                currentElement.value.scaleY =
+                    1 +
+                    (currentElement.value.height - originData.initialHeight) /
+                        originData.initialHeight;
+                //                                }
+            } else {
+                //斜向拖动text改字体和间距
+                let oblique = ["rb", "rt", "lb", "lt"].includes(dotIdName);
+                if (isText(operateType) && oblique) {
+                    currentElement.value.fontSize = +(
+                        ((originData.height + offsetY) / originData.height) *
+                        originData.fontSize
+                    ).toFixed(2);
+                    currentElement.value.letterSpacing = +(
+                        ((originData.height + offsetY) / originData.height) *
+                        originData.letterSpacing
+                    ).toFixed(2);
+                }
+                //斜向拖动价格改字体和间距
+                // else if (isPrice(operateType) && oblique) {
+                //   //digit.integral.size,text.digit.decimal.size
+                //   currentElement.value.digit.integral.size = +(
+                //     ((originData.height + offsetY) / originData.height) *
+                //     originData.digit.integral.size
+                //   ).toFixed(2);
+                //   currentElement.value.digit.decimal.size = +(
+                //     ((originData.height + offsetY) / originData.height) *
+                //     originData.digit.decimal.size
+                //   ).toFixed(2);
+                //   currentElement.value.letterSpacing = +(
+                //     ((originData.height + offsetY) / originData.height) *
+                //     originData.letterSpacing
+                //   ).toFixed(2);
+                //   //如果有前后缀，那么相应的改前后缀
+                //   ["prefix", "suffix"].forEach((affixName) => {
+                //     if (currentElement.value[affixName]) {
+                //       currentElement.value[affixName].fontSize = +(
+                //         ((originData.height + offsetY) / originData.height) *
+                //         originData[affixName].fontSize
+                //       ).toFixed(2);
+                //     }
+                //   });
+                // }
+            }
+
+            //如果不是编辑模式才需要同步调整图片本身的缩小比例
+            //   if (!that.isImageEdit) {
+            //     that.adjustImageScale(originData, currentElement.value);
+            //   }
+
+            //scalable时去除自动调节行为
+            //   if (operateSubType !== "scalable") {
+            //     //text水平拖拉，盒子高度由挤压后的文字高度定
+            //     let currentDom = document.querySelector(
+            //       "#" + "text" + allData.value.indexOf(currentElement.value)
+            //     );
+            //     if (
+            //       ($this.hasClass("rm") || $this.hasClass("lm")) &&
+            //       isText(operateType)
+            //     ) {
+            //       currentElement.value.height = currentDom.scrollHeight;
+            //     }
+            //     if (
+            //       ($this.hasClass("mt") || $this.hasClass("mb")) &&
+            //       isText(operateType)
+            //     ) {
+            //       currentElement.value.width = currentDom.scrollWidth;
+            //     }
+            //   }
+
+            if (
+                currentElement.value.width < 0 ||
+                currentElement.value.height < 0
+            )
+                return;
+
+            if (["rm", "lm", "mt", "mb"].includes(dotIdName)) {
+                //这里的top/left区域的改变 还要修改
+                let testR1 = Math.sqrt(
+                    Math.pow(originData.width, 2) +
+                        Math.pow(originData.height, 2)
+                );
+                let testR2 = Math.sqrt(
+                    Math.pow(originData.width + offsetX, 2) +
+                        Math.pow(originData.height + offsetY, 2)
+                );
+                let testZ1 =
+                    Math.atan(originData.width / originData.height) -
+                    testRotate / 2;
+                let testZ2 =
+                    Math.atan(
+                        currentElement.value.width / currentElement.value.height
+                    ) -
+                    testRotate / 2;
+                let testL1 = (2 * Math.sin(testRotate / 2) * testR1) / 2;
+                let testL2 = (2 * Math.sin(testRotate / 2) * testR2) / 2;
+                let xOffset =
+                    testL2 * Math.cos(testZ2) - testL1 * Math.cos(testZ1);
+                let yOffset =
+                    testL2 * Math.sin(testZ2) - testL1 * Math.sin(testZ1);
+                currentElement.value.left = originData.left - xOffset;
+                currentElement.value.top = originData.top + yOffset;
+                if (["lm"].includes(dotIdName)) {
+                    currentElement.value.left -= offsetX * Math.cos(testRotate);
+                    currentElement.value.top -= offsetX * Math.sin(testRotate);
+                } else if (["mt"].includes(dotIdName)) {
+                    currentElement.value.left += offsetY * Math.sin(testRotate);
+                    currentElement.value.top -= offsetY * Math.cos(testRotate);
+                }
+            } else if (["rb", "rt", "lb", "lt"].includes(dotIdName)) {
+                let testR1 = Math.sqrt(
+                    Math.pow(currentElement.value.width, 2) +
+                        Math.pow(currentElement.value.height, 2)
+                );
+                let testR2 = testR1 + length1 * flag;
+                let xOffset1 =
+                    testR1 *
+                    Math.sin(testRotate / 2) *
+                    Math.cos(kDia - testRotate / 2);
+                let xOffset2 =
+                    testR2 *
+                    Math.sin(testRotate / 2) *
+                    Math.cos(kDia - testRotate / 2);
+                let yOffset1 =
+                    testR1 *
+                    Math.sin(testRotate / 2) *
+                    Math.sin(kDia - testRotate / 2);
+                let yOffset2 =
+                    testR2 *
+                    Math.sin(testRotate / 2) *
+                    Math.sin(kDia - testRotate / 2);
+                currentElement.value.left =
+                    originData.left - (xOffset2 - xOffset1);
+                currentElement.value.top =
+                    originData.top + (yOffset2 - yOffset1);
+                if (["lb"].includes(dotIdName)) {
+                    currentElement.value.left -= offsetX * Math.cos(testRotate);
+                    currentElement.value.top -= offsetX * Math.sin(testRotate);
+                } else if (["rt"].includes(dotIdName)) {
+                    currentElement.value.left += offsetY * Math.sin(testRotate);
+                    currentElement.value.top -= offsetY * Math.cos(testRotate);
+                } else if (["lt"].includes(dotIdName)) {
+                    currentElement.value.left -=
+                        length1 *
+                        flag *
+                        Math.cos(testRotate + Math.PI / 2 - kDia);
+                    currentElement.value.top -=
+                        length1 *
+                        flag *
+                        Math.sin(testRotate + Math.PI / 2 - kDia);
+                }
+            }
+        };
+    }
+    setMouseDownEvent(pack);
+    // event.stopPropagation();
+}
+
 useEventListener(window, "mousemove", (e: any) => {
     let value = viewer.value as HTMLDivElement;
     // console.log(value.offsetLeft)
@@ -155,7 +409,7 @@ useEventListener(window, "mousemove", (e: any) => {
             typeof mouseDownEvent.value === "object"
         ) {
             // @ts-ignore
-            mouseDownEvent.value.cb(e);
+            mouseDownEvent.value.callback(e);
         }
     }
 });
@@ -165,7 +419,6 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
     // mergeObject(currentElement.value, newData);
     clearMouseDownEvent();
 });
-useEventListener(window, "resize", viewerResize);
 function dealEleEnter(key: string) {
     // 暂时用 index 来判断当前选中元素，后续可能会改用 virtualKey (已改用)
     currentHoverKey.value = key;
@@ -196,6 +449,13 @@ function viewerResize() {
         );
     }
 }
+
+useEventListener(window, "resize", viewerResize);
+
+// 先执行一次但好像没有生效(update：用生命周期包裹一下)
+onMounted(() => {
+    viewerResize();
+});
 function curBoxDown(event: MouseEvent) {
     let eventStartPosition = {
         x: event.clientX,
@@ -206,7 +466,7 @@ function curBoxDown(event: MouseEvent) {
         target: currentElement.value,
         event: event,
         // originData,
-        cb: function (moveEvent: MouseEvent) {
+        callback: function (moveEvent: MouseEvent) {
             let viewerWidth = 800;
             let viewerHeight = 800;
 

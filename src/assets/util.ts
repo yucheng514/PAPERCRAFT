@@ -22,6 +22,7 @@ export {
     getFont,
     // getClipSvgStyle,
     getZIndex,
+    isText,
     // loadFontFamily,
     // fonts,
     // getCustomIds,
@@ -64,10 +65,12 @@ function copy(object: object) {
 //     if (!type) return;
 //     return ['complex'].indexOf(type.toLowerCase()) !== -1
 // }
-// function isText(type: any) {
-//     if (!type) return;
-//     return ['text', 'customtext', 'color_tag'].indexOf(type.toLowerCase()) !== -1
-// }
+function isText(type: any) {
+    if (!type) return;
+    return (
+        ["text", "customtext", "color_tag"].indexOf(type.toLowerCase()) !== -1
+    );
+}
 
 // function isPriceText(type: any) {
 //     if (!type) return;
