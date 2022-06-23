@@ -56,16 +56,27 @@
                     @mouseup="curBoxUp($event)"
                     :style="getDragBoxStyle"
                 >
-                    <!-- 八个点，用来对元素进行各个方位的缩放 -->
-                    <!-- <div class="relative"> -->
-                    <!-- 不用容器包裹好像也可以 -->
-                    <em
-                        v-for="dot in dots"
-                        :id="dot"
-                        :style="getDotStyle(dot)"
-                        @mousedown.stop="dotMouseDown($event)"
-                    ></em>
-                    <!-- </div> -->
+                    <!-- 八个点 + 旋转，用来对元素进行各个方位的缩放 -->
+                    <div @mousedown.stop="dotMouseDown($event)">
+                        <em
+                            v-for="dot in dots"
+                            :id="dot"
+                            :style="getDotStyle(dot)"
+                        ></em>
+                        <em id="rotate"></em>
+                    </div>
+                    <p
+                        class="absolute left-1/2 bottom--75px text-center w50px h18px bg-#ccc rounded-9px border border-#fff text-12px color-#444"
+                        :style="{
+                            transform:
+                                'translateX(-50%) rotate(-' +
+                                currentElement.transform +
+                                'deg)',
+                        }"
+                        v-show="rotateShow"
+                    >
+                        {{ currentElement.transform + "°" }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -145,6 +156,7 @@ watch(
         }, 0);
     }
 );
+let rotateShow = ref(false);
 function dotMouseDown(event: MouseEvent) {
     let eventStartPosition = {
         x: event.clientX,
@@ -165,8 +177,7 @@ function dotMouseDown(event: MouseEvent) {
         pack.callback = function (moveEvent: any) {
             let flag = 1;
             // @ts-ignore
-            let testRotate =
-                (currentElement.value.transform * Math.PI) / 180;
+            let testRotate = (currentElement.value.transform * Math.PI) / 180;
             let k = Math.tan(Math.PI / 2 - testRotate);
             if (["mt", "mb"].includes(dotIdName)) {
                 k = Math.tan(-testRotate);
@@ -232,7 +243,7 @@ function dotMouseDown(event: MouseEvent) {
             // let operateSubType =
             //     currentElement.value.subType &&
             //     currentElement.value.subType.toLowerCase();
-            let operateSubType = ''
+            let operateSubType = "";
             //scalable拖动不再改字体、间距，直接改 scale
             if (isText(operateType) && operateSubType === "scalable") {
                 //                                let isX=$this.hasClass('rm') || $this.hasClass('lm')
@@ -395,6 +406,46 @@ function dotMouseDown(event: MouseEvent) {
                 }
             }
         };
+    } else if (dotIdName === "rotate") {
+        //                    let circle = {x: bound.x + bound.width / 2, y: bound.y + bound.height / 2}
+        rotateShow.value = true;
+        pack.hideRotateText = function () {
+            rotateShow.value = false;
+        };
+        let circle = {
+            x:
+                currentElement.value.left * viewerSize.value +
+                (currentElement.value.width * viewerSize.value) / 2,
+            y:
+                currentElement.value.top * viewerSize.value +
+                (currentElement.value.height * viewerSize.value) / 2,
+        };
+        pack.callback = function (moveEvent: any) {
+            let length1 = Math.sqrt(
+                Math.pow(moveEvent.positionX - circle.x, 2) +
+                    Math.pow(moveEvent.positionY - circle.y, 2)
+            );
+            let length2 = Math.abs(moveEvent.positionX - circle.x);
+            let angle = (Math.asin(length2 / length1) * 180) / Math.PI;
+
+            if (
+                moveEvent.positionY < circle.y &&
+                moveEvent.positionX <= circle.x
+            ) {
+                angle = 180 - angle;
+            } else if (moveEvent.positionX > circle.x) {
+                if (moveEvent.positionY <= circle.y) {
+                    angle = 180 + angle;
+                } else {
+                    angle = 360 - angle;
+                }
+            }
+            let integer = Math.round(angle / 30);
+            if (Math.abs(angle - integer * 30) <= 2) angle = integer * 30;
+
+            //需要目标对象、初始数据、旋转角度
+            currentElement.value.transform = parseInt(angle.toFixed(2));
+        };
     }
     setMouseDownEvent(pack);
     // event.stopPropagation();
@@ -419,6 +470,8 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
     // let originData = mouseDownEvent.value.originData;
     // let newData = copy(currentElement.value);
     // mergeObject(currentElement.value, newData);
+    // @ts-ignore
+    mouseDownEvent.value.hideRotateText && mouseDownEvent.value.hideRotateText()
     clearMouseDownEvent();
 });
 function dealEleEnter(key: string) {
@@ -666,5 +719,32 @@ const getRendererStyle = computed(() => {
     width: 800px;
     height: 800px;
     opacity: 1;
+}
+
+#rotate {
+    position: absolute;
+    display: inline-block;
+    border: 1px solid #666;
+    background: #fff;
+    width: 8px;
+    height: 8px;
+    background: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='%23757575'><circle fill='%23fff' cx='9' cy='9' r='8'/><path d='M13.864 3.82a.22.22 0 0 0-.24.048L12.5 4.992a5.26 5.26 0 0 0-3.432-1.268 5.25 5.25 0 0 0-3.731 1.545A5.25 5.25 0 0 0 3.792 9a5.25 5.25 0 0 0 1.545 3.731 5.25 5.25 0 0 0 3.731 1.545 5.25 5.25 0 0 0 3.731-1.545.794.794 0 0 0-1.123-1.123 3.663 3.663 0 0 1-2.608 1.08C7.035 12.688 5.38 11.034 5.38 9s1.654-3.688 3.688-3.688c.848 0 1.652.284 2.304.808l-1.057 1.057a.22.22 0 0 0 .156.376h3.309a.22.22 0 0 0 .22-.221V4.024a.221.221 0 0 0-.136-.204z'/></svg>");
+    bottom: 0;
+    left: 50%;
+    margin-bottom: -40px;
+    background-size: 100%;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border: none;
+    margin-left: -10px;
+}
+#rotate:before {
+    content: " ";
+    border-left: 1px dashed #666;
+    position: absolute;
+    height: 20px;
+    margin-top: -18px;
+    /* margin-left: 8px; */
 }
 </style>

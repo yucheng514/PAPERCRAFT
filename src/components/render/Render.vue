@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import ElementRender from "./Element.vue";
 interface Props {
-    elements: any[];
+    elements: TextInter[];
     config: {
         isTextEdit?: boolean;
         editModeItem?: any;
