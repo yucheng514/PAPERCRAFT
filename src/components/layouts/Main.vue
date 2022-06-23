@@ -30,7 +30,7 @@
                     <div
                         class="w-full h0px border border-dashed border-#999 absolute left-0px top-0px z-999"
                         v-show="assistance.showTop"
-                        :style="{ left: assistance.top * viewerSize + 'px' }"
+                        :style="{ top: assistance.top * viewerSize + 'px' }"
                     ></div>
 
                     <!-- 渲染元素 -->
@@ -469,9 +469,14 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
     // let newData = copy(currentElement.value);
     // mergeObject(currentElement.value, newData);
     // @ts-ignore
-    mouseDownEvent.value.hideRotateText &&
+    if (mouseDownEvent.value && mouseDownEvent.value.hideRotateText) {
         // @ts-ignore
         mouseDownEvent.value.hideRotateText();
+    }
+
+    assistance.showLeft = false;
+    assistance.showTop = false;
+
     clearMouseDownEvent();
 });
 function dealEleEnter(key: string) {
@@ -511,7 +516,26 @@ useEventListener(window, "resize", viewerResize);
 onMounted(() => {
     viewerResize();
 });
+const allLeftTop = computed(() => {
+    let leftArr = [];
+    let topArr = [];
+
+    for (let i = 0; i < allData.value.length; i++) {
+        if (allData.value[i].virtualKey !== currentElementKey.value) {
+            leftArr.push(allData.value[i].left);
+            leftArr.push(allData.value[i].left + allData.value[i].width / 2);
+            leftArr.push(allData.value[i].left + allData.value[i].width);
+            topArr.push(allData.value[i].top);
+            topArr.push(allData.value[i].top + allData.value[i].height / 2);
+            topArr.push(allData.value[i].top + allData.value[i].height);
+        }
+    }
+    return { leftArr, topArr };
+});
+
 function curBoxDown(event: MouseEvent) {
+    let range = 8;
+    let linkVal = 1;
     let eventStartPosition = {
         x: event.clientX,
         y: event.clientY,
@@ -532,7 +556,91 @@ function curBoxDown(event: MouseEvent) {
             let top =
                 (moveEvent.clientY - eventStartPosition.y) / viewerSize.value +
                 originData.top;
+            //这一步是做 左右吸边
+            let maxLeft = viewerWidth - originData.width;
+            let maxHeight = viewerHeight - originData.height;
+            if (left <= range && left >= -(range * 1.5)) {
+                left = 0;
+            }
+            if (top <= range && top >= -(range * 1.5)) {
+                top = 0;
+            }
+            //右吸边、下吸边用天花板函数，避免缩小的情况下看起来仍有空隙
+            if (maxLeft - left <= range && maxLeft - left >= -(range * 1.5)) {
+                left = Math.ceil(maxLeft);
+            }
+            if (maxHeight - top <= range && maxHeight - top >= -(range * 1.5)) {
+                top = Math.ceil(maxHeight);
+            }
 
+            //这一步是 对齐线
+            let leftArr = allLeftTop.value.leftArr;
+            let topArr = allLeftTop.value.topArr;
+            if (leftArr && leftArr.length > 0) {
+                let showLeftAssistance = false;
+                let assistanceLeft = 0;
+                for (let i = 0; i < leftArr.length; i++) {
+                    if (Math.abs(leftArr[i] - left) <= linkVal) {
+                        //如果水平方向靠近某条线
+                        left = leftArr[i];
+                        showLeftAssistance = true;
+                        assistanceLeft = leftArr[i];
+                        break;
+                    } else if (
+                        Math.abs(
+                            leftArr[i] - (left + currentElement.value.width / 2)
+                        ) <= linkVal
+                    ) {
+                        left = leftArr[i] - currentElement.value.width / 2;
+                        showLeftAssistance = true;
+                        assistanceLeft = leftArr[i];
+                        break;
+                    } else if (
+                        Math.abs(
+                            leftArr[i] - (left + currentElement.value.width)
+                        ) <= linkVal
+                    ) {
+                        left = leftArr[i] - currentElement.value.width;
+                        showLeftAssistance = true;
+                        assistanceLeft = leftArr[i];
+                        break;
+                    }
+                }
+                assistance.showLeft = showLeftAssistance;
+                assistance.left = assistanceLeft;
+            }
+            if (topArr && topArr.length > 0) {
+                let showTopAssistance = false;
+                let assistanceTop = 0;
+                for (let i = 0; i < topArr.length; i++) {
+                    if (Math.abs(topArr[i] - top) <= linkVal) {
+                        top = topArr[i];
+                        showTopAssistance = true;
+                        assistanceTop = topArr[i];
+                        break;
+                    } else if (
+                        Math.abs(
+                            topArr[i] - (top + currentElement.value.height / 2)
+                        ) <= linkVal
+                    ) {
+                        top = topArr[i] - currentElement.value.height / 2;
+                        showTopAssistance = true;
+                        assistanceTop = topArr[i];
+                        break;
+                    } else if (
+                        Math.abs(
+                            topArr[i] - (top + currentElement.value.height)
+                        ) <= linkVal
+                    ) {
+                        top = topArr[i] - currentElement.value.height;
+                        showTopAssistance = true;
+                        assistanceTop = topArr[i];
+                        break;
+                    }
+                }
+                assistance.showTop = showTopAssistance;
+                assistance.top = assistanceTop;
+            }
             //赋值
             currentElement.value.left = left;
             currentElement.value.top = top;
