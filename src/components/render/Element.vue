@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import Text from "./chlid/Text.vue";
+import Text from "./Text.vue";
 interface Props {
     element: TextInter;
     index: number;

@@ -21,9 +21,8 @@ import { NButton } from "naive-ui";
             <Main class=""></Main>
             <Right class=""></Right>
         </div>
-        <div class="m2 bg-green flex-grow-0 text-center">
-            底部栏
-            <!-- {{ count }}<NButton @click="inc">++</NButton> -->
+        <div class="m2 flex-grow-0 text-center text-sm color-#555">
+            luozha © 2022
         </div>
     </div>
 </template>

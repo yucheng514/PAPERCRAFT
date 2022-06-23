@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import Render from "@/components/render/Render.vue";
+import { Render } from "@/components/render";
 import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
@@ -622,6 +622,7 @@ function emptySelectBox() {
     });
 }
 function preCreateBox(e: MouseEvent) {
+    // 先 return，等要做 complex 元素的时候再用
     return;
     // 记录鼠标按下的开始坐标
     let value = viewer.value as HTMLDivElement;

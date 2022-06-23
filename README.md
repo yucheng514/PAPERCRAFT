@@ -21,6 +21,8 @@
 - [ ] 吸附线
 - [ ] 字体改变
 - [x] index.d.ts ：元素类型（区分 text 和 image）
+- [ ] image 和 complex 类型
+- [ ] 用上 antfu 的配置
 
 
 ### 已知的 bug
