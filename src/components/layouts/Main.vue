@@ -102,7 +102,7 @@ const assistance = reactive({
 });
 let currentHoverKey = ref("");
 const currentElement = computed(() => {
-    let curEl = {};
+    let curEl = {} as TextInter;
     allData.value.some((el) => {
         if (el.virtualKey === currentElementKey.value) {
             curEl = el;
@@ -164,8 +164,9 @@ function dotMouseDown(event: MouseEvent) {
     if (dotIdName && dots.includes(dotIdName)) {
         pack.callback = function (moveEvent: any) {
             let flag = 1;
+            // @ts-ignore
             let testRotate =
-                (parseInt(currentElement.value.transform) * Math.PI) / 180;
+                (currentElement.value.transform * Math.PI) / 180;
             let k = Math.tan(Math.PI / 2 - testRotate);
             if (["mt", "mb"].includes(dotIdName)) {
                 k = Math.tan(-testRotate);
@@ -228,22 +229,23 @@ function dotMouseDown(event: MouseEvent) {
             currentElement.value.width = originData.width + offsetX;
             currentElement.value.height = originData.height + offsetY;
             let operateType = currentElement.value.type.toLowerCase();
-            let operateSubType =
-                currentElement.value.subType &&
-                currentElement.value.subType.toLowerCase();
+            // let operateSubType =
+            //     currentElement.value.subType &&
+            //     currentElement.value.subType.toLowerCase();
+            let operateSubType = ''
             //scalable拖动不再改字体、间距，直接改 scale
             if (isText(operateType) && operateSubType === "scalable") {
                 //                                let isX=$this.hasClass('rm') || $this.hasClass('lm')
                 //                                if(isX){
-                currentElement.value.scaleX =
-                    1 +
-                    (currentElement.value.width - originData.initialWidth) /
-                        originData.initialWidth;
+                // currentElement.value.scaleX =
+                //     1 +
+                //     (currentElement.value.width - originData.initialWidth) /
+                //         originData.initialWidth;
                 //                                }else{
-                currentElement.value.scaleY =
-                    1 +
-                    (currentElement.value.height - originData.initialHeight) /
-                        originData.initialHeight;
+                // currentElement.value.scaleY =
+                //     1 +
+                //     (currentElement.value.height - originData.initialHeight) /
+                //         originData.initialHeight;
                 //                                }
             } else {
                 //斜向拖动text改字体和间距

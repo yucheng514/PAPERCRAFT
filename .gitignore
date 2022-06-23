@@ -1,5 +1,6 @@
 .DS_Store
 imgeditor
+src/assets/fonts.ts
 # Logs
 logs
 *.log
@@ -44,7 +45,8 @@ node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
-typings/
+# 暂时移除 ignore
+# typings/
 
 # TypeScript cache
 *.tsbuildinfo
