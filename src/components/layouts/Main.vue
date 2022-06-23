@@ -140,7 +140,6 @@ const getDotStyle = computed(() => (dot: string) => {
     return style;
 });
 watch(
-    // @ts-ignore
     () => currentElement.value.transform,
     () => {
         setTimeout(() => {
@@ -176,7 +175,6 @@ function dotMouseDown(event: MouseEvent) {
     if (dotIdName && dots.includes(dotIdName)) {
         pack.callback = function (moveEvent: any) {
             let flag = 1;
-            // @ts-ignore
             let testRotate = (currentElement.value.transform * Math.PI) / 180;
             let k = Math.tan(Math.PI / 2 - testRotate);
             if (["mt", "mb"].includes(dotIdName)) {
@@ -471,7 +469,9 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
     // let newData = copy(currentElement.value);
     // mergeObject(currentElement.value, newData);
     // @ts-ignore
-    mouseDownEvent.value.hideRotateText && mouseDownEvent.value.hideRotateText()
+    mouseDownEvent.value.hideRotateText &&
+        // @ts-ignore
+        mouseDownEvent.value.hideRotateText();
     clearMouseDownEvent();
 });
 function dealEleEnter(key: string) {
@@ -534,9 +534,7 @@ function curBoxDown(event: MouseEvent) {
                 originData.top;
 
             //赋值
-            // @ts-ignore
             currentElement.value.left = left;
-            // @ts-ignore
             currentElement.value.top = top;
         },
     };
@@ -558,11 +556,9 @@ function curBoxUp(event: MouseEvent) {
     }, 200);
 }
 const getDragBoxStyle = computed(() => {
-    // @ts-ignore
     let style = Object.assign({}, getBoxPosition(currentElement.value), {
         zIndex: 998,
         cursor: "move",
-        // @ts-ignore
         transform: `rotate(${currentElement.value.transform}deg)`,
         border: "1px dashed #000",
     });
@@ -575,7 +571,6 @@ const getHoverBoxStyle = computed(() => (element: any) => {
             {
                 opacity:
                     (!currentElement.value ||
-                        // @ts-ignore
                         currentElement.value.virtualKey !==
                             element.virtualKey) &&
                     currentHoverKey.value !== "" &&
@@ -627,6 +622,7 @@ function emptySelectBox() {
     });
 }
 function preCreateBox(e: MouseEvent) {
+    return;
     // 记录鼠标按下的开始坐标
     let value = viewer.value as HTMLDivElement;
     let viewerLeft = value.offsetLeft;
@@ -651,6 +647,7 @@ function preCreateBox(e: MouseEvent) {
     window.addEventListener("mouseup", emptySelectBox);
 }
 function beginCreateBox(e: MouseEvent) {
+    return;
     if (selectBox.isUsing) {
         let xChange = (e.pageX - originBox.startX) / viewerSize.value;
         let yChange = (e.pageY - originBox.startY) / viewerSize.value;
