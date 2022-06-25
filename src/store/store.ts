@@ -6,7 +6,7 @@ export const useStore = defineStore("main", {
     state: () => {
         return {
             viewerSize: 1,
-            currentElementKey: null,
+            currentElementKey: '',
             count: 0,
             mouseDownEvent: null,
             allData,
@@ -24,7 +24,7 @@ export const useStore = defineStore("main", {
         //     // mergeObject(ele, val)
         // },
         clearCurrentElement() {
-            this.currentElementKey = null;
+            this.currentElementKey = '';
         },
         setMouseDownEvent(val: any) {
             this.mouseDownEvent = val;
@@ -37,5 +37,9 @@ export const useStore = defineStore("main", {
         //         this.mouseDownEvent.callback(e)
         //     }
         // }
+        addText(val: TextInter) {
+            this.currentElementKey = val.virtualKey
+            allData.push(val)
+        },
     },
 });

@@ -7,7 +7,7 @@ const initialAlign = {
 
 export {
     mergeObject,
-    formatDateTime,
+    genarateKey,
     copy,
     // customMap,
     // initialAlign,
@@ -54,7 +54,10 @@ function formatDateTime() {
     let h = date.getHours();
     let minute = date.getMinutes();
     let second = date.getSeconds();
-    return y + Number(m) + Number(d) + h + minute + second;
+    return "" + y + m + Number(d) + h + minute + second;
+}
+function genarateKey(){
+    return formatDateTime() + Math.random().toString(36).substr(2)
 }
 function copy(object: object) {
     if (!object) return object;
