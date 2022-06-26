@@ -46,7 +46,7 @@
 import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-
+import { ElSlider, ElInput } from "element-plus";
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);
