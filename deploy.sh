@@ -3,6 +3,9 @@
 # 当发生错误时中止脚本
 set -e
 
+# 删除 dist 目录
+rm -rf dist
+
 # 构建
 npm run build
 
