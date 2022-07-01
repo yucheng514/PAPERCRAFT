@@ -70,17 +70,17 @@ const currentElement = computed(() => {
     return curEl;
 });
 
-const opacity = computed({
+const opacity = computed<number>({
     get() {
         return currentElement.value.opacity * 100;
     },
-    set(val) {
+    set(val: number) {
         currentElement.value.opacity = val / 100;
     },
 });
 </script>
 <style>
-    #text-tool > div{
-        padding-top:10px ;
-    }
+#text-tool > div {
+    padding-top: 10px;
+}
 </style>

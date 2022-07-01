@@ -6,7 +6,7 @@
         "paths": {
             "@/*": ["./src/*"]
         },
-        "typeRoots": ["./node_modules/@types/", "./src/typings/"],
+        "typeRoots": ["./node_modules/@types/", "./src/typings/"]
     },
 
     "references": [
