@@ -19,7 +19,7 @@ import { Top, Left, Right, Main } from "./components/layouts";
             <Main class=""></Main>
             <Right class=""></Right>
         </div>
-        <div class="p2 flex-grow-0 text-center text-sm color-#555 border">
+        <div class="bg-[#f7faf7] p2 flex-grow-0 text-center text-sm color-#555">
             luozha © 2022
         </div>
     </div>
@@ -35,5 +35,6 @@ body,
 
 * {
     box-sizing: border-box;
+    user-select: none;
 }
 </style>

@@ -8,7 +8,7 @@
         <!-- 可选中区域 -->
         <div
             id="viewer"
-            class="relative w-full h-full flex justify-center items-center"
+            class="bg-[#fdfffd] relative w-full h-full flex justify-center items-center"
             ref="viewer"
             @mousedown="viewerClick"
         >
@@ -796,9 +796,9 @@ const getRendererStyle = computed(() => {
 });
 </script>
 <style>
-#viewer {
+/* #viewer {
     background-color: #eff2f7;
-}
+} */
 .renderer {
     display: flex;
     position: relative;

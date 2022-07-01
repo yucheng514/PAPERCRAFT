@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-grow-0 bg-white w400px h-full p15px">
+    <div class="bg-[#f7faf7] flex-grow-0 w400px h-full p15px">
         添加文字元素：
         <!-- <div id="text-button" class="text-30px font-bold" @click="createText(1)">大标题</div>
         <div id="text-button" class="text-24px font-medium" @click="createText(2)">副标题</div> -->
