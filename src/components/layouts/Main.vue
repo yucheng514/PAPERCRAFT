@@ -34,14 +34,15 @@
                     ></div>
 
                     <!-- 渲染元素 -->
+                    <!-- 使用 render 来渲染的话，部署之后添加新元素会失败 -->
                     <!-- <render :elements="allData" :config="{}"></render> -->
-                    <Element
+                    <element
                         v-for="(el, index) in allData"
                         :key="el.virtualKey"
                         :element="el"
                         :index="index"
                         :config="{}"
-                    ></Element>
+                    ></element>
 
                     <!-- 渲染元素的框体 -->
                     <div
