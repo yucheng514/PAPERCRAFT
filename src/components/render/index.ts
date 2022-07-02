@@ -1,3 +1,4 @@
 import Render from "./Render.vue";
+import Element from "./Element.vue";
 
-export { Render };
+export { Render, Element };

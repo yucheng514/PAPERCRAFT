@@ -30,12 +30,13 @@
                 <el-slider v-model="opacity" size="small" />
             </div>
             <div>
-                角度
+                角度:{{currentElement.transform}}°
                 <el-slider
                     v-model="currentElement.transform"
                     size="small"
                     :min="0"
                     :max="360"
+                    :show-tooltip="false"
                 />
             </div>
         </div>

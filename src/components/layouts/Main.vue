@@ -34,7 +34,14 @@
                     ></div>
 
                     <!-- 渲染元素 -->
-                    <render :elements="allData" :config="{}"></render>
+                    <!-- <render :elements="allData" :config="{}"></render> -->
+                    <Element
+                        v-for="(el, index) in allData"
+                        :key="el.virtualKey"
+                        :element="el"
+                        :index="index"
+                        :config="{}"
+                    ></Element>
 
                     <!-- 渲染元素的框体 -->
                     <div
@@ -63,7 +70,9 @@
                             :id="dot"
                             :style="getDotStyle(dot)"
                         ></em>
-                        <em id="rotate"></em>
+
+                        <!-- 暂时移除旋转操作，在工具栏内改动 -->
+                        <!-- <em id="rotate"></em> -->
                     </div>
                     <p
                         class="absolute left-1/2 bottom--75px text-center w50px h18px bg-#ccc rounded-9px border border-#fff text-12px color-#444"
@@ -84,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { Render } from "@/components/render";
+import { Element } from "@/components/render";
 import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
@@ -806,7 +815,7 @@ const getRendererStyle = computed(() => {
     box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     background-position: 0 0, 8px 8px;
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
             to top right,
             #ccc 25%,
             transparent 25%,
@@ -821,10 +830,11 @@ const getRendererStyle = computed(() => {
             transparent 75%,
             #ccc 75%,
             #ccc
-        );
+        ); */
     width: 800px;
     height: 800px;
     opacity: 1;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2QwZDBkMCIgb3BhY2l0eT0iMC4yIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZDBkMGQwIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=");
 }
 
 #rotate {
