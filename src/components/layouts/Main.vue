@@ -99,7 +99,7 @@ import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 import { copy, mergeObject, isText } from "@/assets/util";
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
 
 const store = useStore();
@@ -111,6 +111,7 @@ const {
     setMouseDownEvent,
     clearMouseDownEvent,
     clearCurrentElement,
+    deleteCurrentElement,
     // setElement,
 } = store;
 const viewer = ref({});
@@ -489,6 +490,14 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
 
     clearMouseDownEvent();
 });
+
+onKeyStroke("Delete", (e: KeyboardEvent) => {
+    e.preventDefault();
+    if(currentElementKey){
+        deleteCurrentElement()
+        clearCurrentElement()
+    }
+});
 function dealEleEnter(key: string) {
     // 暂时用 index 来判断当前选中元素，后续可能会改用 virtualKey (已改用)
     currentHoverKey.value = key;
@@ -496,9 +505,9 @@ function dealEleEnter(key: string) {
 function dealEleLeave() {
     currentHoverKey.value = "";
 }
-function dealHoverBoxDown(event: MouseEvent, element: any) {
+function dealHoverBoxDown(event: MouseEvent, key: string) {
     // dealMouseDown(element, event);
-    setCurrentElementKey(element);
+    setCurrentElementKey(key);
 }
 function dealMouseDown(element: any, event: any) {
     setCurrentElementKey(element);
