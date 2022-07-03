@@ -26,11 +26,15 @@
                 />
             </div>
             <div>
-                透明度
-                <el-slider v-model="opacity" size="small" />
+                透明度:{{ opacity.toFixed(0) }}%
+                <el-slider
+                    v-model="opacity"
+                    size="small"
+                    :show-tooltip="false"
+                />
             </div>
             <div>
-                角度:{{currentElement.transform}}°
+                角度:{{ currentElement.transform }}°
                 <el-slider
                     v-model="currentElement.transform"
                     size="small"
