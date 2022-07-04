@@ -6,7 +6,8 @@
         "paths": {
             "@/*": ["./src/*"]
         },
-        "typeRoots": ["./node_modules/@types/", "./src/typings/"]
+        "typeRoots": ["./node_modules/@types/", "./src/typings/"],
+        "types": ["vitest/globals"]
     },
 
     "references": [

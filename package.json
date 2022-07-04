@@ -1,26 +1,30 @@
 {
-  "name": "papercraft",
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview --port 5050",
-    "typecheck": "vue-tsc --noEmit",
-    "deploy": "sh deploy.sh"
-  },
-  "dependencies": {
-    "@vueuse/core": "^8.7.3",
-    "element-plus": "^2.2.6",
-    "pinia": "^2.0.14",
-    "vue": "^3.2.31"
-  },
-  "devDependencies": {
-    "@types/node": "^16.11.26",
-    "@vitejs/plugin-vue": "^2.3.1",
-    "@vue/tsconfig": "^0.1.3",
-    "typescript": "~4.6.3",
-    "unocss": "^0.38.2",
-    "vite": "^2.9.1",
-    "vue-tsc": "^0.33.9"
-  }
+    "name": "papercraft",
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "vite",
+        "deploy": "sh deploy.sh",
+        "test": "vitest",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview --port 5050",
+        "typecheck": "vue-tsc --noEmit"
+    },
+    "dependencies": {
+        "@vueuse/core": "^8.7.3",
+        "element-plus": "^2.2.6",
+        "pinia": "^2.0.14",
+        "vue": "^3.2.31"
+    },
+    "devDependencies": {
+        "@testing-library/vue": "^6.6.0",
+        "@types/node": "^16.11.26",
+        "@vitejs/plugin-vue": "^2.3.1",
+        "@vue/tsconfig": "^0.1.3",
+        "happy-dom": "^6.0.0",
+        "typescript": "~4.6.3",
+        "unocss": "^0.38.2",
+        "vite": "^2.9.1",
+        "vitest": "^0.16.0",
+        "vue-tsc": "^0.33.9"
+    }
 }
