@@ -11,7 +11,6 @@ export {
     copy,
     // customMap,
     // initialAlign,
-    // isText,
     // isPriceText,
     // isPrice,
     // isComplex,

@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
+import { defineStore, createPinia } from "pinia";
 import { allData } from "@/assets/mock";
 // import { mergeObject } from "@/assets/util";
-
+const pinia = createPinia()
 export const useStore = defineStore("main", {
     state: () => {
         return {
@@ -48,3 +48,5 @@ export const useStore = defineStore("main", {
         },
     },
 });
+
+export default pinia

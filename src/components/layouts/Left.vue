@@ -14,21 +14,11 @@ import { computed } from "vue";
 import { genarateKey } from "@/assets/util";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-
+import currentElement from './computed/currentElement'
 const store = useStore();
 const { currentElementKey, allData } = storeToRefs(store);
 const { addText } = store;
 
-const currentElement = computed(() => {
-    let curEl = {} as TextInter;
-    allData.value.some((el) => {
-        if (el.virtualKey === currentElementKey.value) {
-            curEl = el;
-            return true;
-        } else return false;
-    });
-    return curEl;
-});
 function createText(type: number) {
     let text: TextInter = {
         content: "输入正文",

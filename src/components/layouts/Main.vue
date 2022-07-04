@@ -101,6 +101,7 @@ import { storeToRefs } from "pinia";
 import { copy, mergeObject, isText } from "@/assets/util";
 import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
+import currentElement from './computed/currentElement'
 
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
@@ -123,16 +124,6 @@ const assistance = reactive({
     showTop: false,
 });
 let currentHoverKey = ref("");
-const currentElement = computed(() => {
-    let curEl = {} as TextInter;
-    allData.value.some((el) => {
-        if (el.virtualKey === currentElementKey.value) {
-            curEl = el;
-            return true;
-        } else return false;
-    });
-    return curEl;
-});
 
 const getDotStyle = computed(() => (dot: string) => {
     let style = {

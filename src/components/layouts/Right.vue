@@ -52,6 +52,7 @@ import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 import { ElSlider, ElInput } from "element-plus";
+import currentElement from "./computed/currentElement";
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);
@@ -63,17 +64,6 @@ const {
     clearCurrentElement,
     // setElement,
 } = store;
-
-const currentElement = computed(() => {
-    let curEl = {} as TextInter;
-    allData.value.some((el) => {
-        if (el.virtualKey === currentElementKey.value) {
-            curEl = el;
-            return true;
-        } else return false;
-    });
-    return curEl;
-});
 
 const opacity = computed<number>({
     get() {
