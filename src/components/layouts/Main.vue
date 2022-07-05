@@ -101,7 +101,7 @@ import { storeToRefs } from "pinia";
 import { copy, mergeObject, isText } from "@/assets/util";
 import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
-import currentElement from './computed/currentElement'
+import currentElement from "./computed/currentElement";
 
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
@@ -484,9 +484,9 @@ useEventListener(window, "mouseup", (e: MouseEvent) => {
 
 onKeyStroke("Delete", (e: KeyboardEvent) => {
     e.preventDefault();
-    if(currentElementKey){
-        deleteCurrentElement()
-        clearCurrentElement()
+    if (currentElementKey) {
+        deleteCurrentElement();
+        clearCurrentElement();
     }
 });
 function dealEleEnter(key: string) {

@@ -1,7 +1,9 @@
 <template>
-    <Text :element="props.element"
-    :index="props.index"
-    :config="props.config"></Text>
+    <Text
+        :element="props.element"
+        :index="props.index"
+        :config="props.config"
+    ></Text>
 </template>
 
 <script setup lang="ts">
