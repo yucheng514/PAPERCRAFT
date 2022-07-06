@@ -22,6 +22,7 @@ export {
     // getClipSvgStyle,
     getZIndex,
     isText,
+    isImage,
     // loadFontFamily,
     // fonts,
     // getCustomIds,
@@ -55,8 +56,8 @@ function formatDateTime() {
     let second = date.getSeconds();
     return "" + y + m + Number(d) + h + minute + second;
 }
-function genarateKey(){
-    return formatDateTime() + Math.random().toString(36).substr(2)
+function genarateKey() {
+    return formatDateTime() + Math.random().toString(36).substr(2);
 }
 function copy(object: object) {
     if (!object) return object;
@@ -67,13 +68,12 @@ function copy(object: object) {
 //     if (!type) return;
 //     return ['complex'].indexOf(type.toLowerCase()) !== -1
 // }
-function isText(type: any) {
-    if (!type) return;
-    return (
-        ["text", "customtext", "color_tag"].indexOf(type.toLowerCase()) !== -1
-    );
+function isText(type: string) {
+    return type === "TEXT";
 }
-
+function isImage(type: string){
+    return type === "IMAGE"
+}
 // function isPriceText(type: any) {
 //     if (!type) return;
 //     return ['text', 'autoprice', 'price', 'customprice', 'customtext', 'color_tag', 'daily_price', 'promo_price'].indexOf(type.toLowerCase()) !== -1

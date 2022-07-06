@@ -1,6 +1,7 @@
 <template>
     <Text
-        :element="props.element"
+        v-if="props.element.type === 'TEXT'"
+        :element="(props.element as TextInter)"
         :index="props.index"
         :config="props.config"
     ></Text>
@@ -8,8 +9,9 @@
 
 <script setup lang="ts">
 import Text from "./Text.vue";
+
 interface Props {
-    element: TextInter;
+    element: ElementInter;
     index: number;
     // currentElement: object;
     // complexElement: object;

@@ -36,13 +36,13 @@
                     <!-- 渲染元素 -->
                     <!-- 使用 render 来渲染的话，部署之后添加新元素会失败 -->
                     <!-- <render :elements="allData" :config="{}"></render> -->
-                    <element
+                    <ElementRender
                         v-for="(el, index) in allData"
                         :key="el.virtualKey"
                         :element="el"
                         :index="index"
                         :config="{}"
-                    ></element>
+                    ></ElementRender>
 
                     <!-- 渲染元素的框体 -->
                     <div
@@ -94,14 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import { Element } from "@/components/render";
+import { ElementRender } from "@/components/render";
 import { ref, reactive, computed, watch, onMounted } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 import { copy, mergeObject, isText } from "@/assets/util";
 import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
-import currentElement from "./computed/currentElement";
+import currentElement from "@/components/computed/currentElement";
 
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
@@ -245,28 +245,15 @@ function dotMouseDown(event: MouseEvent) {
             //     currentElement.value.subType.toLowerCase();
             let operateSubType = "";
             //scalable拖动不再改字体、间距，直接改 scale
-            if (isText(operateType) && operateSubType === "scalable") {
-                //                                let isX=$this.hasClass('rm') || $this.hasClass('lm')
-                //                                if(isX){
-                // currentElement.value.scaleX =
-                //     1 +
-                //     (currentElement.value.width - originData.initialWidth) /
-                //         originData.initialWidth;
-                //                                }else{
-                // currentElement.value.scaleY =
-                //     1 +
-                //     (currentElement.value.height - originData.initialHeight) /
-                //         originData.initialHeight;
-                //                                }
-            } else {
+            if (isText(operateType)) {
                 //斜向拖动text改字体和间距
                 let oblique = ["rb", "rt", "lb", "lt"].includes(dotIdName);
                 if (isText(operateType) && oblique) {
-                    currentElement.value.fontSize = +(
+                    (currentElement.value as TextInter).fontSize = +(
                         ((originData.height + offsetY) / originData.height) *
                         originData.fontSize
                     ).toFixed(2);
-                    currentElement.value.letterSpacing = +(
+                    (currentElement.value as TextInter).letterSpacing = +(
                         ((originData.height + offsetY) / originData.height) *
                         originData.letterSpacing
                     ).toFixed(2);

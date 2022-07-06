@@ -14,7 +14,7 @@ import { computed } from "vue";
 import { genarateKey } from "@/assets/util";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-import currentElement from "./computed/currentElement";
+import currentElement from "@/components/computed/currentElement";
 const store = useStore();
 const { currentElementKey, allData } = storeToRefs(store);
 const { addText } = store;

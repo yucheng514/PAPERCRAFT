@@ -1,5 +1,23 @@
 // todo 模拟一个请求回来的 allData
-const allData: TextInter[] = [
+const imageData: ImageInter = {
+    type: "IMAGE",
+    width: 309,
+    height: 190,
+    left: 159.32203389830508,
+    top: 228.64406779661016,
+    zIndex: 55,
+    opacity: 1,
+    transform: 0,
+    rotateX: false,
+    rotateY: false,
+    src: "https://cdn.cxb123.com/imgextra1/a6/dLto81ew.png",
+    originHeight: 190,
+    originWidth: 309,
+    // relative: { left: 0, top: 0, scaleHeight: 1, scaleWidth: 1 },
+    virtualKey: "20220706215255mtfq48lo0f",
+};
+
+const allData: (TextInter | ImageInter)[] = [
     {
         type: "TEXT",
         content: "大标题",
