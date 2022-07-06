@@ -1,3 +1,14 @@
+declare interface ElementInter {
+    type: string;
+    width: number;
+    height: number;
+    left: number;
+    top: number;
+    transform: number;
+    opacity: number;
+    virtualKey: string;
+}
+
 declare interface TextInter extends ElementInter {
     type: "TEXT";
     content: string;
@@ -12,12 +23,12 @@ declare interface TextInter extends ElementInter {
     color: string;
     textDecoration: string;
     textOrder: string;
-    virtualKey: string;
 }
 
 declare interface ImageInter extends ElementInter {
     type: "IMAGE";
     // locked: false,
+    isBackground: boolean;
     zIndex: number;
     rotateX: boolean;
     rotateY: boolean;
@@ -25,15 +36,4 @@ declare interface ImageInter extends ElementInter {
     originHeight: number;
     originWidth: number;
     // relative: { left: 0, top: 0, scaleHeight: 1, scaleWidth: 1 },
-}
-
-declare interface ElementInter {
-    type: string,
-    width: number;
-    height: number;
-    left: number;
-    top: number;
-    transform: number;
-    opacity: number;
-    virtualKey: string;
 }
