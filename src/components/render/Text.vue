@@ -16,11 +16,6 @@ interface Props {
     index: number;
     // currentElement: object;
     // complexElement: object;
-    config: {
-        isTextEdit?: boolean;
-        editModeItem?: any;
-        freeText?: boolean;
-    };
 }
 const props = defineProps<Props>();
 // const alignConversion = {

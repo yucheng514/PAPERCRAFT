@@ -41,7 +41,6 @@
                         :key="el.virtualKey"
                         :element="el"
                         :index="index"
-                        :config="{}"
                     ></ElementRender>
 
                     <!-- 渲染元素的框体 -->

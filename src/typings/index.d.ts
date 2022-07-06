@@ -21,7 +21,7 @@ declare interface ImageInter extends ElementInter {
     zIndex: number;
     rotateX: boolean;
     rotateY: boolean;
-    src: "https://cdn.cxb123.com/imgextra1/a6/dLto81ew.png";
+    src: string;
     originHeight: number;
     originWidth: number;
     // relative: { left: 0, top: 0, scaleHeight: 1, scaleWidth: 1 },

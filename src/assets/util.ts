@@ -19,7 +19,6 @@ export {
     // getRelative,
     // dealWithAngle,
     getFont,
-    // getClipSvgStyle,
     getZIndex,
     isText,
     isImage,
@@ -71,8 +70,8 @@ function copy(object: object) {
 function isText(type: string) {
     return type === "TEXT";
 }
-function isImage(type: string){
-    return type === "IMAGE"
+function isImage(type: string) {
+    return type === "IMAGE";
 }
 // function isPriceText(type: any) {
 //     if (!type) return;
@@ -126,100 +125,3 @@ function getFont(fontName: string) {
     return font;
 }
 
-// function getClipSvgStyle(box, child) {
-//     //正常的svg盒子
-//     let result = {};
-//     if (child) {
-//         let relative = getRelative(box, child)
-//         result = {
-//             path: box.path,
-//             src: box.src,
-//             x: relative.left * 100,
-//             y: relative.top * 100,
-//             width: child.width / box.width * 100,
-//             height: child.height / box.height * 100
-//         }
-//     } else {
-//         result = {
-//             path: box.path,
-//             src: box.src,
-//             x: box.relative.left * 100,
-//             y: box.relative.top * 100,
-//             width: box.originWidth * box.relative.scaleWidth / box.width * 100,
-//             height: box.originHeight * box.relative.scaleHeight / box.height * 100
-//         }
-//     }
-//     return result
-// }
-
-// //如果外部没传 fontStatus，那就内部自己记录
-// let innerFontStatus = {};
-// //备注：字体加载情况需要与store同步，所以
-// function loadFontFamily(fontRealName, allFontStatus = innerFontStatus) {
-//     return new Promise((resolve, reject) => {
-//         //这里只负责加载，不负责赋值
-//         if (!fontRealName) fontRealName = 'Alibaba PuHuiTi R'
-//         if (!fonts[fontRealName]) {
-//             reject(`字体库查询字体${fontRealName}失败，请联系管理员`)
-//             return;
-//         }
-//         let fontStatus = allFontStatus[fontRealName]
-//         if (fontStatus === 'loaded') {
-//             // console.log(`字体${fontRealName}已加载过`)
-//             resolve()
-//             return;
-//         }
-//         let style = document.createElement('style');
-//         let head = document.head || document.getElementsByTagName('head')[0];
-//         style.type = 'text/css';
-//         let textNode = document.createTextNode(`@font-face {font-family:${fontRealName};src:url(${fonts[fontRealName].src});}`);
-//         style.appendChild(textNode);
-//         head.appendChild(style);
-
-//         //创建虚拟dom引用字体，帮助字体加载；
-//         let text = document.createElement('p');
-//         text.appendChild(document.createTextNode('test'))
-//         text.style.fontFamily = fontRealName;
-//         text.style.visibility = 'hidden';
-//         document.body.appendChild(text);
-//         //先更新一遍状态，应该会更新到loading
-//         setTimeout(() => {
-//             let documentFontStatus = getDocumentFontStatus(fontRealName, allFontStatus);
-//             // store.commit('setFontStatus', {fontFamily: fontRealName, status: documentFontStatus});
-//             allFontStatus[fontRealName] = documentFontStatus
-//         }, 0)
-//         document.fonts.ready.then(() => {
-//             let interval = setInterval(() => {
-//                 let documentFontStatus = getDocumentFontStatus(fontRealName, allFontStatus);
-//                 //无论成功失败、更新vuex字体状态
-//                 // store.commit('setFontStatus', {fontFamily: fontRealName, status: documentFontStatus});
-//                 allFontStatus[fontRealName] = documentFontStatus
-//                 //未加载、加载中，不做后续操作
-//                 if (['unloaded', 'loading'].indexOf(documentFontStatus) !== -1) return;
-
-//                 //加载完了，分为成功、失败处理
-//                 clearInterval(interval);
-//                 document.body.removeChild(text);
-//                 if (documentFontStatus === 'loaded') {
-//                     // console.info(`加载${fontRealName}成功了`)
-//                     resolve();
-//                 } else {
-//                     //todo 失败时的全局提示
-//                     console.error(`加载${fontRealName}失败了`);
-//                     reject(`加载字体${fontRealName}失败`);
-//                 }
-//             }, 300)
-//         })
-//     })
-// }
-// function getDocumentFontStatus(fontRealName, allFontStatus = innerFontStatus) {
-//     let status = ''
-//     for (let font of document.fonts) {
-//         if (font.family === fontRealName) {
-//             status = font.status
-//             allFontStatus[fontRealName] = status
-//             // store.commit('setFontStatus', {fontFamily: fontRealName, status})
-//         }
-//     }
-//     return status || 'unloaded'
-// }

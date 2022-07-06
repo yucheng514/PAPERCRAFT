@@ -1,26 +1,31 @@
 <template>
-    <Text
-        v-if="props.element.type === 'TEXT'"
-        :element="(props.element as TextInter)"
+    <component
+        :is="currentComponent"
+        :element="props.element"
         :index="props.index"
-        :config="props.config"
-    ></Text>
+    ></component>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import Text from "./Text.vue";
+import Image from "./Image.vue";
 
 interface Props {
     element: ElementInter;
     index: number;
-    // currentElement: object;
-    // complexElement: object;
-    config: {
-        isTextEdit?: boolean;
-        editModeItem?: any;
-        freeText?: boolean;
-    };
 }
 const props = defineProps<Props>();
+
+const currentComponent = computed(() => {
+    let type = props.element.type;
+    let current;
+    if (type === "IMAGE") {
+        current = Image;
+    } else if (type === "TEXT") {
+        current = Text;
+    }
+    return current;
+});
 </script>
 <style scoped></style>
