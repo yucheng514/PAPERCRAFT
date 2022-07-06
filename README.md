@@ -15,7 +15,7 @@
 
 - [x] 拖拽移动，吸附线，八点放缩，旋转
 - [x] index.d.ts ：元素类型（区分 text 和 image）
-- [ ] image 和 complex 类型
+- [x] image 和  ~~complex~~ 类型
 - [x] 域名解析 GET https://www.daluozha.cn/assets/index.5e5debdc.css 404 [已解决]在 vite.config.ts 的 defineConfig 里加上 base: './'
 - [ ] 测试库 [Jest 实践指南](https://github.yanhaixiang.com/jest-tutorial/)
 - [ ] 适配手机端，调试使用[vConsole](https://github.com/Tencent/vConsole)
