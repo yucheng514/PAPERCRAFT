@@ -94,7 +94,14 @@
 
 <script setup lang="ts">
 import { ElementRender } from "@/components/render";
-import { ref, reactive, computed, watch, onMounted } from "vue";
+import {
+    ref,
+    reactive,
+    computed,
+    watch,
+    onMounted,
+    type CSSProperties,
+} from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 import { copy, mergeObject, isText } from "@/assets/util";
@@ -781,14 +788,14 @@ const getSelectBoxStyle = computed(() => {
         height: selectBox.height * viewerSize.value + "px",
         top: selectBox.top * viewerSize.value + "px",
         left: selectBox.left * viewerSize.value + "px",
-    } as const;
+    } as CSSProperties;
 });
 
 const getRendererStyle = computed(() => {
     return {
         width: 800 * viewerSize.value + "px",
         height: 800 * viewerSize.value + "px",
-    } as const;
+    } as CSSProperties;
 });
 </script>
 <style>

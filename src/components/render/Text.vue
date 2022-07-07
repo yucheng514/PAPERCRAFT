@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, ref } from "vue";
+import { reactive, computed, ref, type CSSProperties } from "vue";
 import { getFont, getZIndex } from "@/assets/util";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
@@ -69,7 +69,7 @@ const getStyle = computed(() => {
         //     : this.alignConversion[util.initialAlign.horizontal],
         alignItems: "center",
         justifyContent: "center",
-    } as const;
+    } as CSSProperties;
     return style;
 });
 </script>

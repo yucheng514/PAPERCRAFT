@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute" :style="getWrapStyle">
+    <div :style="getWrapStyle">
         <!--普通图片或svg容器或背景色 -->
         <!-- <div
             style="width: 100%; height: 100%"
@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, ref } from "vue";
+import { reactive, computed, ref, type CSSProperties } from "vue";
+// import type { CSSProperties } from 'vue'
 
 import { getZIndex } from "@/assets/util";
 import { useStore } from "@/store/store";
@@ -38,18 +39,19 @@ const getImageStyle = computed(() => {
         left: 0,
     };
     return {
-        width: image.originWidth * scaleWidth * viewerSize.value + "px",
-        height: image.originHeight * scaleHeight * viewerSize.value + "px",
+        position: "absolute",
         top: top * 100 + "%",
         left: left * 100 + "%",
-        position: "absolute",
-    } as const;
+        width: image.originWidth * scaleWidth * viewerSize.value + "px",
+        height: image.originHeight * scaleHeight * viewerSize.value + "px",
+    } as CSSProperties;
 });
 const getWrapStyle = computed(() => {
     {
         let image = props.element;
         //添加overflow:hidden，服务图片的裁剪
         let style = {
+            position: "absolute",
             opacity: image.opacity,
             // zIndex:
             //     image.subType && image.subType.toLowerCase() === "background"
@@ -66,7 +68,7 @@ const getWrapStyle = computed(() => {
             overflow: "hidden",
             display: "block",
         };
-        return style;
+        return style as CSSProperties;
     }
 });
 </script>

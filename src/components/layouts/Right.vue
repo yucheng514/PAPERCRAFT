@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[#f7faf7] w400px h-full flex-grow-0 p15px">
+    <div class="bg-[#f7faf7] w400px h-full flex-grow-0 p15px overflow-hidden">
         工具栏
         <div id="text-tool" v-if="currentElementKey">
             <section v-if="isText">
