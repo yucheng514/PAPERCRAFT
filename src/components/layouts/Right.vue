@@ -27,25 +27,26 @@
                     />
                 </div>
             </section>
-
-            <div>
-                透明度:{{ opacity.toFixed(0) }}%
-                <el-slider
-                    v-model="opacity"
-                    size="small"
-                    :show-tooltip="false"
-                />
-            </div>
-            <div>
-                角度:{{ currentElement.transform }}°
-                <el-slider
-                    v-model="currentElement.transform"
-                    size="small"
-                    :min="0"
-                    :max="360"
-                    :show-tooltip="false"
-                />
-            </div>
+            <section v-if="isText || (isImage && !isBackground)">
+                <div>
+                    透明度:{{ opacity.toFixed(0) }}%
+                    <el-slider
+                        v-model="opacity"
+                        size="small"
+                        :show-tooltip="false"
+                    />
+                </div>
+                <div>
+                    角度:{{ currentElement.transform }}°
+                    <el-slider
+                        v-model="currentElement.transform"
+                        size="small"
+                        :min="0"
+                        :max="360"
+                        :show-tooltip="false"
+                    />
+                </div>
+            </section>
         </div>
     </div>
 </template>
@@ -56,7 +57,7 @@ import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 import { ElSlider, ElInput } from "element-plus";
 import currentElement from "@/components/computed/currentElement";
-import { isText, isImage } from "@/components/computed/tools";
+import { isText, isImage, isBackground } from "@/components/computed/tools";
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);

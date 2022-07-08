@@ -29,11 +29,13 @@ declare interface ImageInter extends ElementInter {
     type: "IMAGE";
     // locked: false,
     isBackground: boolean;
+    background?: string;
+    backgroundImage?: string;
     zIndex: number;
     rotateX: boolean;
     rotateY: boolean;
     src: string;
     originHeight: number;
     originWidth: number;
-    // relative: { left: 0, top: 0, scaleHeight: 1, scaleWidth: 1 },
+    relative: { left: 0; top: 0; scaleHeight: 1; scaleWidth: 1 };
 }

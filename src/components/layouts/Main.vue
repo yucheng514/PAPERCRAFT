@@ -164,6 +164,30 @@ watch(
     }
 );
 let rotateShow = ref(false);
+function adjustImageScale(originElement: any, element: any) {
+    let originWidth = originElement.width;
+    let originHeight = originElement.height;
+    let newWidth = element.width;
+    let newHeight = element.height;
+    //非编辑模式，图片外边框变化时，同步调整图片大小
+    if (
+        !element ||
+        !element.relative ||
+        !(element.type.toLowerCase() === "image")
+    ) {
+        return;
+    }
+    if (originWidth) {
+        let rateWidth = newWidth / originWidth;
+        element.relative.scaleWidth =
+            rateWidth * originElement.relative.scaleWidth;
+    }
+    if (originHeight) {
+        let rateHeight = newHeight / originHeight;
+        element.relative.scaleHeight =
+            rateHeight * originElement.relative.scaleHeight;
+    }
+}
 function dotMouseDown(event: MouseEvent) {
     let eventStartPosition = {
         x: event.clientX,
@@ -291,10 +315,7 @@ function dotMouseDown(event: MouseEvent) {
                 // }
             }
 
-            //如果不是编辑模式才需要同步调整图片本身的缩小比例
-            //   if (!that.isImageEdit) {
-            //     that.adjustImageScale(originData, currentElement.value);
-            //   }
+            adjustImageScale(originData, currentElement.value);
 
             //scalable时去除自动调节行为
             //   if (operateSubType !== "scalable") {

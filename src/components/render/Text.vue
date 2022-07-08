@@ -1,6 +1,8 @@
 <template>
     <div :style="getStyle">
-        <p>{{ props.element.content }}</p>
+        <!-- props 的数据可以直接用 -->
+        <!-- <p>{{ props.element.content }}</p> -->
+        <p>{{ element.content }}</p>
     </div>
 </template>
 
@@ -54,7 +56,7 @@ const getStyle = computed(() => {
         color: text.color,
         zIndex: getZIndex(props.index),
         display: "flex",
-        // overflow: 'hidden',
+        overflow: 'hidden',
         wordBreak: "break-all",
         whiteSpace: "pre-wrap",
         // fontWeight: text.fontWeight ? text.fontWeight : "normal", 报错

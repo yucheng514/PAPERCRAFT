@@ -1,12 +1,17 @@
 <template>
     <div :style="getWrapStyle">
         <!--普通图片或svg容器或背景色 -->
-        <!-- <div
+        <div
+            v-if="element.isBackground"
             style="width: 100%; height: 100%"
-            :style="backgroundStyle(element)"
-            v-if="element.subType === 'background' && !element.src"
-        ></div> -->
-        <img @dragstart.prevent :src="element.src" :style="getImageStyle" />
+            :style="getBackgroundStyle(element)"
+        ></div>
+        <img
+            v-else
+            @dragstart.prevent
+            :src="element.src"
+            :style="getImageStyle"
+        />
     </div>
 </template>
 
@@ -26,13 +31,7 @@ interface Props {
 const props = defineProps<Props>();
 const getImageStyle = computed(() => {
     let image = props.element;
-    // let { scaleWidth, scaleHeight, top, left } = image.relative || {
-    //     scaleWidth: 1,
-    //     scaleHeight: 1,
-    //     top: 0,
-    //     left: 0,
-    // };
-    let { scaleWidth, scaleHeight, top, left } = {
+    let { scaleWidth, scaleHeight, top, left } = image.relative || {
         scaleWidth: 1,
         scaleHeight: 1,
         top: 0,
@@ -53,11 +52,7 @@ const getWrapStyle = computed(() => {
         let style = {
             position: "absolute",
             opacity: image.opacity,
-            // zIndex:
-            //     image.subType && image.subType.toLowerCase() === "background"
-            //         ? 1
-            //         : util.getZIndex(this.index),
-            zIndex: getZIndex(props.index),
+            zIndex: image.isBackground ? 1 : getZIndex(props.index),
             left: image.left * viewerSize.value + "px",
             top: image.top * viewerSize.value + "px",
             width: image.width * viewerSize.value + "px",
@@ -69,6 +64,22 @@ const getWrapStyle = computed(() => {
             display: "block",
         };
         return style as CSSProperties;
+    }
+});
+const getBackgroundStyle = computed(() => (element: any) => {
+    if (element.backgroundImage) {
+        let linearGradient = `linear-gradient(${
+            element.backgroundImage.degree
+        }deg, ${element.backgroundImage.colorPercent
+            .map((data: any) => `${data.color} ${data.percent * 100 + "%"}`)
+            .join(",")})`;
+        return {
+            "background-image": linearGradient,
+        };
+    } else {
+        return {
+            "background-color": element.background || "transparent",
+        };
     }
 });
 </script>

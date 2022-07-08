@@ -7,4 +7,7 @@ const isText = computed(() => {
 const isImage = computed(() => {
     return currentElement.value.type === "IMAGE";
 });
-export { isText, isImage };
+const isBackground = computed(() => {
+    return (currentElement.value as ImageInter).isBackground;
+});
+export { isText, isImage, isBackground };
