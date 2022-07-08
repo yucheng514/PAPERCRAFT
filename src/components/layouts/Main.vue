@@ -46,7 +46,7 @@
                     <!-- 渲染元素的框体 -->
                     <div
                         v-for="(element, index) in allData"
-                        class="absolute border border-#000 border-dashed z-998"
+                        class="absolute border border-#000 border-dashed"
                         :style="getHoverBoxStyle(element)"
                         @mousedown.stop="
                             dealHoverBoxDown($event, element.virtualKey)
@@ -104,10 +104,11 @@ import {
 } from "vue";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
-import { copy, mergeObject, isText } from "@/assets/util";
+import { copy, mergeObject, isTextType, isImageType } from "@/assets/util";
 import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
 import currentElement from "@/components/computed/currentElement";
+import { isImage, isBackground } from "@/components/computed/tools";
 
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
@@ -275,10 +276,10 @@ function dotMouseDown(event: MouseEvent) {
             //     currentElement.value.subType.toLowerCase();
             let operateSubType = "";
             //scalable拖动不再改字体、间距，直接改 scale
-            if (isText(operateType)) {
+            if (isTextType(operateType)) {
                 //斜向拖动text改字体和间距
                 let oblique = ["rb", "rt", "lb", "lt"].includes(dotIdName);
-                if (isText(operateType) && oblique) {
+                if (isTextType(operateType) && oblique) {
                     (currentElement.value as TextInter).fontSize = +(
                         ((originData.height + offsetY) / originData.height) *
                         originData.fontSize
@@ -694,6 +695,9 @@ const getDragBoxStyle = computed(() => {
         transform: `rotate(${currentElement.value.transform}deg)`,
         border: "1px dashed #000",
     });
+    if (isImage.value && isBackground.value) {
+        style.zIndex = 2;
+    }
     return style;
 });
 const getHoverBoxStyle = computed(() => (element: any) => {
@@ -718,6 +722,9 @@ const getHoverBoxStyle = computed(() => (element: any) => {
         );
         if (element.transform) {
             style.transform = "rotate(" + element.transform + "deg)";
+        }
+        if (isImageType(element.type) && element.isBackground) {
+            style.zIndex = 2;
         }
         return style;
     } else return {};

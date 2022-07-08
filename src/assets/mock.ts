@@ -4,8 +4,8 @@ const imageData: ImageInter = {
     isBackground: false,
     width: 300,
     height: 300,
-    left: 0,
-    top: 0,
+    left: 1,
+    top: 1,
     zIndex: 55,
     opacity: 1,
     transform: 0,
@@ -84,7 +84,7 @@ const allData: (TextInter | ImageInter)[] = [
         virtualKey: "20220614175751z7hyzapggn",
     },
     imageData,
-    // bgData
+    bgData
 ];
 
 export { allData };

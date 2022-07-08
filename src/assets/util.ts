@@ -20,8 +20,8 @@ export {
     // dealWithAngle,
     getFont,
     getZIndex,
-    isText,
-    isImage,
+    isTextType,
+    isImageType,
     // loadFontFamily,
     // fonts,
     // getCustomIds,
@@ -67,10 +67,10 @@ function copy(object: object) {
 //     if (!type) return;
 //     return ['complex'].indexOf(type.toLowerCase()) !== -1
 // }
-function isText(type: string) {
+function isTextType(type: string) {
     return type === "TEXT";
 }
-function isImage(type: string) {
+function isImageType(type: string) {
     return type === "IMAGE";
 }
 // function isPriceText(type: any) {

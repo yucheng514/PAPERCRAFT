@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 import pinia, { useStore } from "@/store/store";
 const store = useStore(pinia);
 const { currentElementKey, allData } = storeToRefs(store);
-import { isText, isImage } from "@/assets/util";
+// import { isTextType, isImageType } from "@/assets/util";
 const currentElement = computed(() => {
     let curEl = {} as ElementInter;
     allData.value.some((el) => {
