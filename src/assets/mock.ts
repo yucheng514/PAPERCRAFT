@@ -4,8 +4,8 @@ const imageData: ImageInter = {
     isBackground: false,
     width: 300,
     height: 300,
-    left: 1,
-    top: 1,
+    left: 130,
+    top: 30,
     zIndex: 55,
     opacity: 1,
     transform: 0,
@@ -21,7 +21,7 @@ const imageData: ImageInter = {
 const bgData: ImageInter = {
     type: "IMAGE",
     isBackground: true,
-    background:"rgba(200,220,223,1)",
+    background: "rgba(200,220,223,1)",
     // "backgroundImage":null
     width: 800,
     height: 800,
@@ -37,7 +37,7 @@ const bgData: ImageInter = {
     originHeight: 800,
     relative: { left: 0, top: 0, scaleHeight: 1, scaleWidth: 1 },
     virtualKey: "20220708234724hu3mhwjj5cq",
-}
+};
 const allData: (TextInter | ImageInter)[] = [
     {
         type: "TEXT",
@@ -54,8 +54,8 @@ const allData: (TextInter | ImageInter)[] = [
         fontWeight: "",
         fontStyle: "italic",
         color: "rgba(255,0,0,1)",
-        top: 432.6587301587302,
-        left: 0,
+        left: 60,
+        top: 470,
         textDecoration: "line-through",
         opacity: 0.78,
         textOrder: "horizontal",
@@ -84,7 +84,7 @@ const allData: (TextInter | ImageInter)[] = [
         virtualKey: "20220614175751z7hyzapggn",
     },
     imageData,
-    bgData
+    bgData,
 ];
 
 export { allData };
