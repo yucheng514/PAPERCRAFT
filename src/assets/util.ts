@@ -28,6 +28,7 @@ export {
     // canCustomAdd,
     // dealCustomAdd,
     // getDocumentFontStatus
+    getImgRawSize,
 };
 function mergeObject(newObj: any, obj: any) {
     //注意，此方法不支持含有函数的对象复制
@@ -125,3 +126,28 @@ function getFont(fontName: string) {
     return font;
 }
 
+function getImgRawSize(img: any) {
+    return Promise.resolve(
+        new Promise(function (reslove, reject) {
+            var _image = img;
+            if (_image instanceof HTMLImageElement) {
+                if (_image.naturalWidth)
+                    return reslove({
+                        width: _image.naturalWidth,
+                        height: _image.naturalHeight,
+                    });
+                img = img.src;
+            }
+            if (typeof img == "string") {
+                _image = new Image();
+                _image.src = img;
+            }
+            _image.onload = (_: any) =>
+                reslove({
+                    width: _image.naturalWidth || _image.width,
+                    height: _image.naturalHeight || _image.height,
+                });
+            _image.onerror = (_: any) => reject({ width: 0, height: 0 });
+        })
+    );
+}

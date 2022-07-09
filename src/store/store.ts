@@ -46,6 +46,10 @@ export const useStore = defineStore("main", {
             this.currentElementKey = val.virtualKey;
             this.allData.push(val);
         },
+        addImage(val: ImageInter){
+            this.currentElementKey = val.virtualKey;
+            this.allData.push(val);
+        }
     },
 });
 

@@ -31,7 +31,7 @@ declare interface ImageInter extends ElementInter {
     isBackground: boolean;
     background?: string;
     backgroundImage?: string;
-    zIndex: number;
+    zIndex?: number;
     rotateX: boolean;
     rotateY: boolean;
     src: string;
