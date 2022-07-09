@@ -467,6 +467,7 @@ function dotMouseDown(event: MouseEvent) {
 }
 
 useEventListener(window, "mousemove", (e: any) => {
+    if(isImage.value && isBackground.value) return ;
     let value = viewer.value as HTMLDivElement;
     // console.log(value.offsetLeft)
     if (value) {
