@@ -47,6 +47,9 @@
                     />
                 </div>
             </section>
+            <section v-if="isImage && isBackground">
+                bg
+            </section>
         </div>
     </div>
 </template>

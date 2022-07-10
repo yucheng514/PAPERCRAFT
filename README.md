@@ -18,7 +18,7 @@
 - [x] image 和  ~~complex~~ 类型
 - [x] 域名解析 GET https://www.daluozha.cn/assets/index.5e5debdc.css 404 [已解决]在 vite.config.ts 的 defineConfig 里加上 base: './'
 - [ ] 背景渐变
-- [ ] 弹窗添加图片元素(1.url添加 2.本地上传到图床再添加)
+- [x] 弹窗添加图片元素(1.url添加 2.~~本地上传到图床再添加~~)
 - [ ] 测试库 [Jest 实践指南](https://github.yanhaixiang.com/jest-tutorial/)
 - [ ] 适配手机端，调试使用[vConsole](https://github.com/Tencent/vConsole)
 
@@ -27,8 +27,8 @@
 ### 已知的 bug
 - [x] 放缩以后八点 cursor 变回默认了
 - [x] 八点的上下 dot 位置不对
-- [ ] ~~点击旋转时位置会闪，角度总是从 308 度开始【更新：先移除手势操作~~
+- [ ] ~~点击旋转时位置会闪，角度总是从 308 度开始~~【更新：先移除手势操作
 - [x] vue-tsc 一直报错
-- [x] 部署后新加元素不显示文本【render 组件问题，已改用 element
+- [x] 部署后新加元素不显示文本【render 组件问题，已改用 element-render
 - [x] 背景 zIndex 过高，导致选不中其他元素
-- [ ] ~~选中背景时，border 会被在边缘的元素遮挡住[贴边判断用大于等于 1 来操作，不是真正贴边~~【无法解决，zIndex 的问题
+- [ ] ~~选中背景时，border 会被在边缘的元素遮挡住[贴边判断用大于等于 1 来操作，不是真正贴边~~【更新：无法解决，zIndex 的问题
