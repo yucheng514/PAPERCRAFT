@@ -29,6 +29,7 @@ export {
     // dealCustomAdd,
     // getDocumentFontStatus
     getImgRawSize,
+    getLinearFromLevel,
 };
 function mergeObject(newObj: any, obj: any) {
     //注意，此方法不支持含有函数的对象复制
@@ -150,4 +151,19 @@ function getImgRawSize(img: any) {
             _image.onerror = (_: any) => reject({ width: 0, height: 0 });
         })
     );
+}
+
+function getLinearFromLevel({ degree, colorPercent } = {}) {
+    if (!colorPercent) return "";
+    return `linear-gradient(${degree}deg, ${colorPercent
+        .map((data: any) => `${data.color} ${data.percent * 100 + "%"}`)
+        .join(",")})`;
+}
+
+function svgChangeColor(element, newColor){
+    let svgContent = element.content;
+    let regExp = /\<(\w+)\s+[^\<\>]*data\-change\=[\'\"]true[\'\"][^\>]*(?:(?:\/\>)|(?:\>(?:[^](?!\<\1))+\1\>))/g
+    element.content = svgContent.replace(regExp, (match) => {
+        return match.replace(/(fill|stroke)\=[\'\"](?!none)[^\'\"]*[\'\"]/g, "$1=\"" + newColor + "\"")
+    })
 }
