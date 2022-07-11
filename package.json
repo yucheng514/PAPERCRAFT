@@ -12,7 +12,8 @@
     "@vueuse/core": "^8.9.1",
     "element-plus": "^2.2.9",
     "pinia": "^2.0.14",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.2"
   },
   "devDependencies": {
     "@iconify/json": "^2.1.75",

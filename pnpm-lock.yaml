@@ -13,6 +13,7 @@ specifiers:
   unocss: ^0.44.0
   vite: ^2.9.14
   vue: ^3.2.37
+  vue-router: ^4.1.2
   vue-tsc: ^0.33.9
 
 dependencies:
@@ -20,6 +21,7 @@ dependencies:
   element-plus: 2.2.9_vue@3.2.37
   pinia: 2.0.14_3wx4hvlpf33h4r5e7sgliqloou
   vue: 3.2.37
+  vue-router: 4.1.2_vue@3.2.37
 
 devDependencies:
   '@iconify/json': 2.1.75
@@ -1472,6 +1474,15 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
+      vue: 3.2.37
+    dev: false
+
+  /vue-router/4.1.2_vue@3.2.37:
+    resolution: {integrity: sha512-5BP1qXFncVRwgV/XnqzsKApdMjQPqWIpoUBdL1ynz8HyLxIX/UDAx7Ql2BjmA5CXT/p61JfZvkpiFWFpaqcfag==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.2.0
       vue: 3.2.37
     dev: false
 

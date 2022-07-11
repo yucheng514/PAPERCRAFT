@@ -1,7 +1,7 @@
 import { defineStore, createPinia } from "pinia";
 import { allData } from "@/assets/mock";
 // import { mergeObject } from "@/assets/util";
-const pinia = createPinia()
+const pinia = createPinia();
 export const useStore = defineStore("main", {
     state: () => {
         return {
@@ -46,11 +46,11 @@ export const useStore = defineStore("main", {
             this.currentElementKey = val.virtualKey;
             this.allData.push(val);
         },
-        addImage(val: ImageInter){
+        addImage(val: ImageInter) {
             this.currentElementKey = val.virtualKey;
             this.allData.push(val);
-        }
+        },
     },
 });
 
-export default pinia
+export default pinia;

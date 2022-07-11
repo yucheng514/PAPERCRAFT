@@ -102,14 +102,14 @@ import {
     onMounted,
     type CSSProperties,
 } from "vue";
-import { useStore } from "@/store/store";
-import { storeToRefs } from "pinia";
+
 import { copy, mergeObject, isTextType, isImageType } from "@/assets/util";
 import { useEventListener, onKeyStroke } from "@vueuse/core";
 import { dots, dotStyle, cursorObject, assertCursor } from "@/assets/dots";
 import currentElement from "@/components/computed/currentElement";
 import { isImage, isBackground } from "@/components/computed/tools";
-
+import { useStore } from "@/store/store";
+import { storeToRefs } from "pinia";
 const store = useStore();
 const { viewerSize, currentElementKey, mouseDownEvent, allData } =
     storeToRefs(store);
