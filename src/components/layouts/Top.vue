@@ -41,8 +41,8 @@ function open() {
 }
 function save() {
     localStorage.setItem("screenshot", JSON.stringify(allData.value));
-    // axios.defaults.headers.post["Content-Type"] =
-    //     "application/x-www-form-urlencoded";
+    axios.defaults.headers.post["Content-Type"] =
+        "application/x-www-form-urlencoded";
 
     axios
         .post(url, {

@@ -12,6 +12,7 @@ export default defineConfig({
         vue(),
         Unocss({
             presets: [
+                // @ts-ignore
                 presetIcons({
                     prefix: "i-",
                     extraProperties: {
