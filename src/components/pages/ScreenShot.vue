@@ -1,5 +1,5 @@
 <template>
-    <!-- http://localhost:3000/screenshot -->
+    <!-- http://127.0.0.1:3000/screenshot -->
     <ElementRender
         v-for="(el, index) in allData"
         :key="el.virtualKey"
@@ -12,7 +12,13 @@
 import { ElementRender } from "@/components/render";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 const store = useStore();
 const { allData } = storeToRefs(store);
+// let data = ref(allData.value);
+// let localData = localStorage.getItem("screenshot");
+// if (localData) {
+//     data.value = JSON.parse(localData);
+// }
 </script>
 <style scoped></style>
