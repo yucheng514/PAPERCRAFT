@@ -7,13 +7,14 @@
         <!-- <el-link href="https://github.com/daluozha/PAPERCRAFT" target="_blank"
             >github</el-link
         > -->
-        <div>
+
+        <!-- <div>
             <el-button @click="open"> 截图预览 </el-button>
             <el-button class="ml5px!" @click="save">Yuubee 截图</el-button>
             <el-link class="ml5px" href="https://github.com/daluozha/Yuubee"
                 >Yuubee 是什么？</el-link
             >
-        </div>
+        </div> -->
 
         <a
             href="https://github.com/daluozha/PAPERCRAFT"
@@ -22,6 +23,8 @@
         >
             <div class="i-uil-github-alt color-#828891 text-6"></div>
         </a>
+
+
         <!-- <div>撤销，重做</div> -->
         <!-- <div>保存</div> -->
     </div>
