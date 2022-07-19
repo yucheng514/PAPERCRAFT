@@ -35,3 +35,4 @@
 - [x] 背景 zIndex 过高，导致选不中其他元素
 - [ ] ~~选中背景时，border 会被在边缘的元素遮挡住【贴边判断用大于等于 1 来操作，不是真正贴边~~【更新：无法解决，zIndex 的问题
 - [ ] ~~截图时网页没有最新的 store 状态，还是最初的 allData 【尝试用 localStorage 或者 vueuse 相关函数~~【更新：暂时无法解决，puppeteer 使用的浏览器无法读取之前存下的 localStorage，怎么样都是最初的状态，【解决方案可能是：将 screenshot 打包到 gh-pages 再调接口
+- [x] 部署在 gh-pages 会空白【已解决：使用 vue-router 之后要配置一下 createWebHistory
