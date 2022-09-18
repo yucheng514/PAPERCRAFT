@@ -1,6 +1,7 @@
 # PAPERCRAFT
 
-
+### What is PAPERCRAFT
+Image Editor by Vue3 + Vite + Typescript
 
 ### Deps
 - vuex ➡️ [pinia](https://pinia.vuejs.org/)
