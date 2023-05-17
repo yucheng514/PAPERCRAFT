@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { reactive, computed, ref, type CSSProperties } from "vue";
-import { getFont, getZIndex } from "@/assets/util";
+import {  getZIndex } from "@/assets/util";
 import { useStore } from "@/store/store";
 import { storeToRefs } from "pinia";
 const store = useStore();
@@ -31,7 +31,7 @@ const props = defineProps<Props>();
 
 const getStyle = computed(() => {
     let text = props.element;
-    let realFont = getFont(text.fontFamily);
+    // let realFont = getFont(text.fontFamily);
     let style = {
         letterSpacing: `${text.letterSpacing}px`,
         lineHeight: text.lineHeight,
@@ -40,7 +40,8 @@ const getStyle = computed(() => {
         fontSize: text.fontSize + "px",
         transform: `scale(${viewerSize.value}) rotate(${text.transform}deg)`,
         transformOrigin: "center",
-        fontFamily: `${realFont.name}`,
+        // fontFamily: `${realFont.name}`,
+        fontFamily: '',
         position: "absolute",
         left: `${
             text.left * viewerSize.value -
