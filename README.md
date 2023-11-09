@@ -1,7 +1,7 @@
 # PAPERCRAFT
 
 ### What is PAPERCRAFT
-Image Editor by Vue3 + Vite + Typescript. Here is [demo](https://www.daluozha.cn/PAPERCRAFT/).
+Image Editor by Vue3 + Vite + Typescript. Here is [demo](https://yucheng514.github.io/PAPERCRAFT/).
 
 ### Deps
 - vuex ➡️ [pinia](https://pinia.vuejs.org/)
