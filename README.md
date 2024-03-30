@@ -24,6 +24,7 @@ Image Editor by Vue3 + Vite + Typescript. Here is [demo](https://yucheng514.gith
 - [x] 弹窗添加图片元素(1.url添加 2.~~本地上传到图床再添加~~)
 - [ ] 测试库 [Jest 实践指南](https://github.yanhaixiang.com/jest-tutorial/)
 - [ ] 适配手机端，调试使用[vConsole](https://github.com/Tencent/vConsole)
+- [ ] 增加字体改变功能
 
 
 

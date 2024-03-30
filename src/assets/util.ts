@@ -1,4 +1,4 @@
-// import fonts from "./fonts";
+import fonts from "./fonts";
 
 const initialAlign = {
     vertical: "middle", //这里top时输入文字不会位移，否则会(改为middle,否则有更大的问题-主要兼容输入)
@@ -23,7 +23,7 @@ export {
     isTextType,
     isImageType,
     // loadFontFamily,
-    // fonts,
+    fonts,
     // getCustomIds,
     // canCustomAdd,
     // dealCustomAdd,

@@ -65,7 +65,7 @@ const allData: (TextInter | ImageInter)[] = [
         type: "TEXT",
         content: "多行\n文字元素",
         fontSize: 68.58,
-        fontFamily: "Alibaba PuHuiTi B",
+        fontFamily: "Alibaba PuHuiTi L",
         lineHeight: 2,
         letterSpacing: 4.81,
         transform: 0,

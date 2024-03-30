@@ -1,6 +1,6 @@
 .DS_Store
 imgeditor
-src/assets/fonts.ts
+# src/assets/fonts.ts
 # Logs
 logs
 *.log
