@@ -1,12 +1,26 @@
 {
-    "extends": "@vue/tsconfig/tsconfig.web.json",
-    "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+    "extends": [
+        "@vue/tsconfig/tsconfig.json"
+    ],
+    "include": [
+        "env.d.ts",
+        "src/**/*",
+        "src/**/*.vue"
+    ],
     "compilerOptions": {
+        "types": [
+            "node"
+        ],
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": [
+                "./src/*"
+            ]
         },
-        "typeRoots": ["./node_modules/@types/", "./src/typings/"]
+        "typeRoots": [
+            "./node_modules/@types/",
+            "./src/typings/"
+        ]
     },
 
     "references": [
